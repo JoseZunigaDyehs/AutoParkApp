@@ -24,7 +24,7 @@
                     <a href="index.htm">Inicio</a>
                     <a href="pagar.htm">Pagar</a>
                     <a href="verPagos.htm">Ver Pagos</a>
-                    <a href="#!">Ver Estacionamientos</a>
+                    <a href="estacionamientos.htm">Ver Estacionamientos</a>
                 </div>
                 
             </div>

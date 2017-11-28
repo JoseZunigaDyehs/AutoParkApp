@@ -9,6 +9,6 @@
         <a href="index.htm" class="py-2 px-4 my-1">INICIO</a>
         <a href="pagar.htm" class="py-2 px-4 my-1">PAGAR</a>
         <a href="verPagos.htm" class="py-2 px-4 my-1">VER PAGOS</a>
-        <a href="" class="py-2 px-4 my-1">VER ESTACIONAMIENTOS</a>
+        <a href="estacionamientos.htm" class="py-2 px-4 my-1">VER ESTACIONAMIENTOS</a>
     </nav>
 </header>

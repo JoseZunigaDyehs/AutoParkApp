@@ -22,6 +22,7 @@
                 <prop key="index.htm">indexController</prop>
                 <prop key="pagar.htm">pagoController</prop>
                 <prop key="verPagos.htm">pagoController</prop>
+                <prop key="estacionamientos.htm">estacionamientoController</prop>
             </props>
         </property>
     </bean>
@@ -40,6 +41,10 @@
     
     <bean name="pagoController"
           class="Controladores.pagoController"
+    />
+    
+    <bean name="estacionamientoController"
+          class="Controladores.estacionamientoController"
     />
 
 </beans>
