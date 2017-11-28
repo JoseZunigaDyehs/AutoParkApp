@@ -10,5 +10,6 @@
         <a href="pagar.htm" class="py-2 px-4 my-1">PAGAR</a>
         <a href="verPagos.htm" class="py-2 px-4 my-1">VER PAGOS</a>
         <a href="estacionamientos.htm" class="py-2 px-4 my-1">VER ESTACIONAMIENTOS</a>
+        <a href="boucher.htm" class="py-2 px-4 my-1">BOUCHER(TEMPORAL)</a>
     </nav>
 </header>

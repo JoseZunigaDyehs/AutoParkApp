@@ -21,7 +21,6 @@
                 </div>
                 
                 <div class="nav-home mt-4">
-                    <a href="index.htm">Inicio</a>
                     <a href="pagar.htm">Pagar</a>
                     <a href="verPagos.htm">Ver Pagos</a>
                     <a href="estacionamientos.htm">Ver Estacionamientos</a>

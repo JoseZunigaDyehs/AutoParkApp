@@ -39,6 +39,9 @@ main{
 .border-top {
     border-top: 1px solid rgba(0,0,0,0.6);
 }
+.box-shadow{
+    box-shadow: 0px 2px 4px rgba(136, 136, 136, 0.3);
+}
 header{
   background: #1a0d3a; /* For browsers that do not support gradients */
   background: -webkit-linear-gradient(to bottom right, #685b88, #1a0d3a); /* For Safari 5.1 to 6.0 */

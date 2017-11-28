@@ -21,7 +21,7 @@
                     <form class="row py-4" method="post" action="">
                         <div class="col-8">
                             <h4>Datos Empresa</h4>
-                            <div class="bg-white p-3 border my-3">
+                            <div class="bg-white p-3 border my-3 box-shadow">
                                 <div class="form-group d-flex align-items-center">
                                     <label class="w-25">Rut: </label>
                                     <input type="text" class="form-control"  placeholder="Ingresa rut">
@@ -76,8 +76,8 @@
                         </div>
                         <div class="col-8">
                             <div>
-                                <div class="bg-white p-3 border mb-3  d-flex flex-column">
-                                    <label >Seleccione Estacionamiento, indique la cantidadde dinero que mostró aplicación móvil</label>
+                                <div class="bg-white p-3 border mb-3  d-flex flex-column box-shadow">
+                                    <label >Seleccione Estacionamiento, indique la cantidad de dinero que mostró aplicación móvil</label>
                                     <div class="form-group d-flex align-items-center w-100">
 
                                         <select class="custom-select mb-2 mr-sm-2 mb-sm-0 w-100" id="inlineFormCustomSelect">

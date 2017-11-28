@@ -19,8 +19,8 @@
         <jsp:include page="_header.jsp"></jsp:include>
             <main class="w-80">
                 <div class="container">
-                    <div class="row py-4">
-                        <div class="col-12">
+                    <div class="row py-4 justify-content-center">
+                        <div class="col-10">
                             <h4 class="mb-3">Estacionamientos:</h4>
                             <table class="table table-sm table-hover table-morado">
                                 <thead>

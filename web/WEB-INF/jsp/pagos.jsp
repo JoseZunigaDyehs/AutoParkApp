@@ -19,10 +19,10 @@
         <jsp:include page="_header.jsp"></jsp:include>
             <main class="w-80">
                 <div class="container">
-                    <div class="row py-4">
-                        <form method="post" action="" class="col-12">
+                    <div class="row py-4 justify-content-center">
+                        <form method="post" action="" class="col-10">
                                 <h4>Buscar Pagos</h4>
-                                <div class="bg-white p-3 border my-3">
+                                <div class="bg-white p-3 border my-3 box-shadow">
                                     <div class="form-group d-flex align-items-center">
                                         <label class="mr-3">Rut: </label>
                                         <input type="text" class="form-control mr-3"  placeholder="Ingresa rut">
@@ -30,7 +30,7 @@
                                     </div>
                                 </div>
                         </form>
-                        <div class="col-12">
+                        <div class="col-10">
                             <h4 class="mb-3">Pagos encontrados:</h4>
                             <table class="table table-sm table-hover table-morado">
                                 <thead>

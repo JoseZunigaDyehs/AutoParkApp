@@ -23,6 +23,7 @@
                 <prop key="pagar.htm">pagoController</prop>
                 <prop key="verPagos.htm">pagoController</prop>
                 <prop key="estacionamientos.htm">estacionamientoController</prop>
+                <prop key="boucher.htm">boucherController</prop>
             </props>
         </property>
     </bean>
@@ -45,6 +46,9 @@
     
     <bean name="estacionamientoController"
           class="Controladores.estacionamientoController"
+    />
+        <bean name="boucherController"
+          class="Controladores.boucherController"
     />
 
 </beans>
