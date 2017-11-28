@@ -1,0 +1,113 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 26-11-2017, 17:22:33
+    Author     : Jose
+*/
+
+body{
+    background-color: #f9f9f9;
+    font-family: 'Lato', sans-serif;
+}
+header{
+    position: fixed;
+}
+main{
+    margin-left: 20%;
+}
+.hv-100{
+    height: 100vh;
+}
+.w-20{
+    width: 20%;
+}
+.w-80{
+    width: 80%;
+}
+.btn{
+    cursor: pointer;
+}
+.table-morado{
+    background-color: rgba(26, 139, 165, 0.35) !important;
+}
+.btn-primary{
+    background-color: #685b88 !important;
+}
+.border-top {
+    border-top: 1px solid rgba(0,0,0,0.6);
+}
+header{
+  background: #1a0d3a; /* For browsers that do not support gradients */
+  background: -webkit-linear-gradient(to bottom right, #685b88, #1a0d3a); /* For Safari 5.1 to 6.0 */
+  background: -o-linear-gradient(to bottom right, #685b88, #1a0d3a); /* For Opera 11.1 to 12.0 */
+  background: -moz-linear-gradient(to bottom right, #685b88, #1a0d3a); /* For Firefox 3.6 to 15 */
+  background: linear-gradient(to bottom right, #685b88, #1a0d3a);
+}
+body.index{
+    height: 100vh;
+  background: #1a0d3a; /* For browsers that do not support gradients */
+  background: -webkit-linear-gradient(to bottom right, #685b88, #1a0d3a); /* For Safari 5.1 to 6.0 */
+  background: -o-linear-gradient(to bottom right, #685b88, #1a0d3a); /* For Opera 11.1 to 12.0 */
+  background: -moz-linear-gradient(to bottom right, #685b88, #1a0d3a); /* For Firefox 3.6 to 15 */
+  background: linear-gradient(to bottom right, #685b88, #1a0d3a);
+}
+body.index .titulo-head{
+    height: 20rem;
+    width: 20rem;
+    border-radius: 15rem;
+    background-color: rgba(0, 0, 0, 0.22);
+}
+body.index .titulo-head i{
+    color: #f9f9f9;
+    font-weight: 900;
+    letter-spacing: 3px;
+    font-size: 6rem;
+}
+body.index .titulo-head h6{
+    color: #f9f9f9;
+    font-weight: 900;
+    letter-spacing: 3px;
+    font-size: 6rem;
+}
+header nav a{
+    background-color: rgba(255,255,255,0.6);
+    color: #000;
+    line-height: 1;
+    text-transform: uppercase;
+    text-decoration: none;
+    font-weight: 600;
+    width: 100%;
+}
+header .titulo-head{
+    height: 7rem;
+    width: 7rem;
+    border-radius: 6rem;
+    background-color: rgba(0, 0, 0, 0.22);
+}
+header .titulo-head i{
+    color: #f9f9f9;
+    font-weight: 900;
+    letter-spacing: 3px;
+    font-size: 2rem;
+}
+header .titulo-head h6{
+    color: #f9f9f9;
+    font-weight: 900;
+    letter-spacing: 3px;
+    font-size: 2rem;
+}
+header nav a:hover{
+    background-color: rgba(255,255,255,0.2);
+    color: #fff;
+    text-decoration: none;
+}
+header nav a{
+    -webkit-transition: ease-in-out all 0.3s; /* Safari */
+    transition: ease-in-out all 0.3s;
+}
+main#index{
+    width: 100%;
+}
