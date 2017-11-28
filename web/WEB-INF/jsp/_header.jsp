@@ -6,8 +6,9 @@
         </div>
     </div>
     <nav class="d-flex flex-column align-items-center">
-        <a href="" class="py-2 px-4 my-1">Home</a>
-        <a href="" class="py-2 px-4 my-1">Home</a>
-        <a href="" class="py-2 px-4 my-1">Home</a>
+        <a href="index.htm" class="py-2 px-4 my-1">INICIO</a>
+        <a href="pagar.htm" class="py-2 px-4 my-1">PAGAR</a>
+        <a href="" class="py-2 px-4 my-1">VER PAGOS</a>
+        <a href="" class="py-2 px-4 my-1">VER ESTACIONAMIENTOS</a>
     </nav>
 </header>
