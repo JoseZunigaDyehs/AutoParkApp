@@ -17,9 +17,17 @@ import org.springframework.web.servlet.ModelAndView;
 public class pagoController {
     
     @RequestMapping(value = "pagar.htm",method = RequestMethod.GET)
-    public ModelAndView home(HttpServletRequest request){
+    public ModelAndView pagarView(HttpServletRequest request){
            
         ModelAndView mv = new ModelAndView("pagar");
+
+        return mv;
+    }
+    
+    @RequestMapping(value = "verPagos.htm",method = RequestMethod.GET)
+    public ModelAndView verPagosView(HttpServletRequest request){
+           
+        ModelAndView mv = new ModelAndView("pagos");
 
         return mv;
     }

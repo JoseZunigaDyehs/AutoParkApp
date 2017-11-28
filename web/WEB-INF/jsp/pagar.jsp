@@ -18,7 +18,7 @@
         <jsp:include page="_header.jsp"></jsp:include>
             <main class="w-80">
                 <div class="container">
-                    <form class="row py-4">
+                    <form class="row py-4" method="post" action="">
                         <div class="col-8">
                             <h4>Datos Empresa</h4>
                             <div class="bg-white p-3 border my-3">

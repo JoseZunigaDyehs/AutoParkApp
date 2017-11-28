@@ -21,6 +21,7 @@
             <props>
                 <prop key="index.htm">indexController</prop>
                 <prop key="pagar.htm">pagoController</prop>
+                <prop key="verPagos.htm">pagoController</prop>
             </props>
         </property>
     </bean>
