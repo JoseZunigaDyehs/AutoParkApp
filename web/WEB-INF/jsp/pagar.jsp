@@ -42,100 +42,97 @@
                         </div>
                         <div class="col-4 mt-5">
                             <h4 class="mb-3">Opciones de pago</h4>
+                        <c:forEach var="pago" items="${pagos}">
                             <div class="form-check">
                                 <label class="form-check-label">
-                                    <input class="form-check-input" type="radio" name="rbOpcionesPago" value="1" checked>
-                                    Transferencia
+                                    <input class="form-check-input" type="radio" name="rbOpcionesPago" value="${pago.getIdPago()}" checked>
+                                    ${pago.getNombrePago()}
                                 </label>
-                            </div>
-                            <div class="form-check">
-                                <label class="form-check-label">
-                                    <input class="form-check-input" type="radio" name="rbOpcionesPago" value="2">
-                                    Pago en línea
-                                </label>
-                            </div>
-                            <div class="form-check disabled">
-                                <label class="form-check-label">
-                                    <input class="form-check-input" type="radio" name="rbOpcionesPago" value="3">
-                                    Orden de compra
-                                </label>
-                            </div>
-                            <h4 class="mb-3 mt-3 border-top pt-2">Opciones de envío boleta</h4>
-                            <div class="form-check">
-                                <label class="form-check-label">
-                                    <input class="form-check-input" type="radio" name="rbEnvio" value="1" checked>
-                                    Correo electrónico
-                                </label>
-                            </div>
-                            <div class="form-check">
-                                <label class="form-check-label">
-                                    <input class="form-check-input" type="radio" name="rbEnvio" value="2">
-                                    Dirección particular
-                                </label>
-                            </div>
-                        </div>
-                        <div class="col-8">
-                            <div>
-                                <div class="bg-white p-3 border mb-3  d-flex flex-column box-shadow">
-                                    <label >Seleccione Estacionamiento, indique la cantidad de dinero que mostró aplicación móvil</label>
-                                    <div class="form-group d-flex align-items-center w-100">
+                            </div>                            
+                        </c:forEach>
 
-                                        <select class="custom-select mb-2 mr-sm-2 mb-sm-0 w-100" id="inlineFormCustomSelect">
+                        <h4 class="mb-3 mt-3 border-top pt-2">Opciones de envío boleta</h4>
+                        <c:forEach var="envio" items="${envios}">
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="radio" name="rbEnvio" value="${envio.getIdEnvio()}" checked>
+                                    ${envio.getNombreEnvio()}
+                                </label>
+                            </div>                            
+                        </c:forEach>
+                    </div>
+                    <div class="col-8">
+                        <div>
+                            <div class="bg-white p-3 border mb-3  d-flex flex-column box-shadow">
+                                <label >Seleccione Estacionamiento, indique la cantidad de dinero que mostró aplicación móvil</label>
+                                <div class="form-group d-flex align-items-center w-100 mb-0">
+                                    <div class="form-group d-flex flex-column w-75">
+                                        <label class="mb-0"><small>Estacionamientos: </small></label>
+                                        <select class="custom-select mr-sm-2 mb-sm-0 w-100 mr-2" id="inlineFormCustomSelect">
                                             <option selected>Seleccione...</option>
                                             <option value="1">One</option>
                                             <option value="2">Two</option>
                                             <option value="3">Three</option>
                                         </select>
-                                        <a href="#!" class="btn btn-secondary"> Agregar</a>
                                     </div>
+                                    <div class="form-group d-flex flex-column w-25 ml-2">
+                                        <label class="mb-0"><small>Monto: </small></label>
+                                        <input type="text" class="form-control" placeholder="Ingresa monto" name="txtMonto">
+                                    </div>
+
                                 </div>
-                            </div>
-                            <table class="table table-sm table-hover table-morado">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">Estacionamiento</th>
-                                        <th scope="col">Monto</th>
-                                        <th scope="col">N° Ticket</th>
-                                        <th scope="col"></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <th>1</th>
-                                        <td>Mark</td>
-                                        <td>Otto</td>
-                                        <td>
-                                            <a href="#!"><i class="fa fa-minus-circle" aria-hidden="true"></i></a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th>2</th>
-                                        <td>Jacob</td>
-                                        <td>Thornton</td>
-                                        <td>
-                                            <a href="#!"><i class="fa fa-minus-circle" aria-hidden="true"></i></a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th>3</th>
-                                        <td colspan="2">Larry the Bird</td>
-                                        <td>
-                                            <a href="#!"><i class="fa fa-minus-circle" aria-hidden="true"></i></a>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            <div class="d-flex justify-content-between px-4">
-                                <h5>$ 7.000</h5>
-                                <button type="submit" class="btn btn-primary">Pagar</button>
-                            </div>
-                            
+                                <div class="d-flex justify-content-end">
+                                    <a href="#!" class="btn btn-secondary"> Agregar</a>
+                                </div>
 
+                            </div>
                         </div>
-                    </form>
-                </div>
+                        <table class="table table-sm table-hover table-morado">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Estacionamiento</th>
+                                    <th scope="col">Monto</th>
+                                    <th scope="col">N° Ticket</th>
+                                    <th scope="col"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th>1</th>
+                                    <td>Mark</td>
+                                    <td>Otto</td>
+                                    <td>
+                                        <a href="#!"><i class="fa fa-minus-circle" aria-hidden="true"></i></a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>2</th>
+                                    <td>Jacob</td>
+                                    <td>Thornton</td>
+                                    <td>
+                                        <a href="#!"><i class="fa fa-minus-circle" aria-hidden="true"></i></a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>3</th>
+                                    <td colspan="2">Larry the Bird</td>
+                                    <td>
+                                        <a href="#!"><i class="fa fa-minus-circle" aria-hidden="true"></i></a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="d-flex justify-content-between px-4">
+                            <h5>$ 7.000</h5>
+                            <button type="submit" class="btn btn-primary">Pagar</button>
+                        </div>
 
-            </main>
+
+                    </div>
+                </form>
+            </div>
+
+        </main>
         <jsp:include page="_js.jsp"></jsp:include>
     </body>
 </html>
