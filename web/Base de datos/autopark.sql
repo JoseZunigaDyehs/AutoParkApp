@@ -75,8 +75,7 @@ INSERT INTO `envio` (`id_envio`, `nombre_envio`) VALUES
 
 CREATE TABLE `estacionamiento` (
   `id_estacionamiento` int(11) NOT NULL,
-  `nombre_estacionamiento` varchar(25) NOT NULL,
-  `precio_estacionamiento` int(11) NOT NULL,
+  `nombre_estacionamiento` varchar(100) NOT NULL,
   `longitud_estacionamiento` varchar(50) NOT NULL,
   `latitud_estacionamiento` varchar(50) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
@@ -109,6 +108,7 @@ INSERT INTO `pago` (`id_pago`, `nombre_pago`) VALUES
 
 CREATE TABLE `ticket` (
   `id_ticket` int(11) NOT NULL,
+  `precio_ticket` int(11) NOT NULL,
   `id_estacionamiento` int(11) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 

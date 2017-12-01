@@ -26,26 +26,20 @@
                                 <thead>
                                     <tr>
                                         <th scope="col">Estacionamiento</th>
-                                        <th scope="col">Precio</th>
+                                        <th scope="col"></th>
                                     </tr>
                                 </thead>
                                 <tbody>
+                                <c:forEach var="estacionamiento" items="${estacionamientos}">
                                     <tr>
-                                        <th>1</th>
-                                        <td>Mark</td>
+                                        <th>
+                                            ${estacionamiento.getNombreEstacionamiento()}
+                                        </th>
+                                        <td>
+                                            <a href="https://www.google.cl/maps/@${estacionamiento.getLongitudEstacionamiento()},${estacionamiento.getLatitudEstacionamiento()}">Ver Más</a>
+                                        </td>
                                     </tr>
-                                    <tr>
-                                        <th>2</th>
-                                        <td>Jacob</td>
-                                    </tr>
-                                    <tr>
-                                        <th>1</th>
-                                        <td>Mark</td>
-                                    </tr>
-                                    <tr>
-                                        <th>2</th>
-                                        <td>Jacob</td>
-                                    </tr>
+                                </c:forEach>
                                 </tbody>
                             </table>
                         </div>

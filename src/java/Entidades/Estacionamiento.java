@@ -28,7 +28,6 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Estacionamiento.findAll", query = "SELECT e FROM Estacionamiento e")
     , @NamedQuery(name = "Estacionamiento.findByIdEstacionamiento", query = "SELECT e FROM Estacionamiento e WHERE e.idEstacionamiento = :idEstacionamiento")
     , @NamedQuery(name = "Estacionamiento.findByNombreEstacionamiento", query = "SELECT e FROM Estacionamiento e WHERE e.nombreEstacionamiento = :nombreEstacionamiento")
-    , @NamedQuery(name = "Estacionamiento.findByPrecioEstacionamiento", query = "SELECT e FROM Estacionamiento e WHERE e.precioEstacionamiento = :precioEstacionamiento")
     , @NamedQuery(name = "Estacionamiento.findByLongitudEstacionamiento", query = "SELECT e FROM Estacionamiento e WHERE e.longitudEstacionamiento = :longitudEstacionamiento")
     , @NamedQuery(name = "Estacionamiento.findByLatitudEstacionamiento", query = "SELECT e FROM Estacionamiento e WHERE e.latitudEstacionamiento = :latitudEstacionamiento")})
 public class Estacionamiento implements Serializable {
@@ -43,9 +42,6 @@ public class Estacionamiento implements Serializable {
     @Column(name = "nombre_estacionamiento")
     private String nombreEstacionamiento;
     @Basic(optional = false)
-    @Column(name = "precio_estacionamiento")
-    private int precioEstacionamiento;
-    @Basic(optional = false)
     @Column(name = "longitud_estacionamiento")
     private String longitudEstacionamiento;
     @Basic(optional = false)
@@ -59,10 +55,9 @@ public class Estacionamiento implements Serializable {
         this.idEstacionamiento = idEstacionamiento;
     }
 
-    public Estacionamiento(Integer idEstacionamiento, String nombreEstacionamiento, int precioEstacionamiento, String longitudEstacionamiento, String latitudEstacionamiento) {
+    public Estacionamiento(Integer idEstacionamiento, String nombreEstacionamiento, String longitudEstacionamiento, String latitudEstacionamiento) {
         this.idEstacionamiento = idEstacionamiento;
         this.nombreEstacionamiento = nombreEstacionamiento;
-        this.precioEstacionamiento = precioEstacionamiento;
         this.longitudEstacionamiento = longitudEstacionamiento;
         this.latitudEstacionamiento = latitudEstacionamiento;
     }
@@ -81,14 +76,6 @@ public class Estacionamiento implements Serializable {
 
     public void setNombreEstacionamiento(String nombreEstacionamiento) {
         this.nombreEstacionamiento = nombreEstacionamiento;
-    }
-
-    public int getPrecioEstacionamiento() {
-        return precioEstacionamiento;
-    }
-
-    public void setPrecioEstacionamiento(int precioEstacionamiento) {
-        this.precioEstacionamiento = precioEstacionamiento;
     }
 
     public String getLongitudEstacionamiento() {

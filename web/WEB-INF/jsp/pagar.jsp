@@ -70,9 +70,9 @@
                                         <label class="mb-0"><small>Estacionamientos: </small></label>
                                         <select class="custom-select mr-sm-2 mb-sm-0 w-100 mr-2" id="inlineFormCustomSelect">
                                             <option selected>Seleccione...</option>
-                                            <option value="1">One</option>
-                                            <option value="2">Two</option>
-                                            <option value="3">Three</option>
+                                        <c:forEach var="estacionamiento" items="${estacionamientos}">
+                                            <option value="${estacionamiento.getIdEstacionamiento()}">${estacionamiento.getNombreEstacionamiento()}</option>
+                                        </c:forEach>
                                         </select>
                                     </div>
                                     <div class="form-group d-flex flex-column w-25 ml-2">

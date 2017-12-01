@@ -6,9 +6,8 @@
 package Controladores;
 
 import DAO.EnvioDAO;
+import DAO.EstacionamientoDAO;
 import DAO.PagoDAO;
-import Entidades.Pago;
-import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -23,12 +22,15 @@ public class pagoController {
     @RequestMapping(value = "pagar.htm",method = RequestMethod.GET)
     public ModelAndView pagarView(HttpServletRequest request){
         
-        List<Pago> pagos = new PagoDAO().ListarPago();
+        PagoDAO pagoDAO = new PagoDAO();
         EnvioDAO envioDAO = new EnvioDAO();
+        EstacionamientoDAO estacionamientoDAO = new EstacionamientoDAO();
+        
         
         ModelAndView mv = new ModelAndView("pagar");
-        mv.addObject("pagos", pagos);
+        mv.addObject("pagos", pagoDAO.ListarPago());
         mv.addObject("envios", envioDAO.listarEnvio());
+        mv.addObject("estacionamientos", estacionamientoDAO.listarEstacionamientos());
         return mv;
         
     }

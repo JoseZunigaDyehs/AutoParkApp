@@ -27,6 +27,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "Ticket.findAll", query = "SELECT t FROM Ticket t")
     , @NamedQuery(name = "Ticket.findByIdTicket", query = "SELECT t FROM Ticket t WHERE t.idTicket = :idTicket")
+    , @NamedQuery(name = "Ticket.findByPrecioTicket", query = "SELECT t FROM Ticket t WHERE t.precioTicket = :precioTicket")
     , @NamedQuery(name = "Ticket.findByIdEstacionamiento", query = "SELECT t FROM Ticket t WHERE t.idEstacionamiento = :idEstacionamiento")})
 public class Ticket implements Serializable {
 
@@ -36,6 +37,9 @@ public class Ticket implements Serializable {
     @Basic(optional = false)
     @Column(name = "id_ticket")
     private Integer idTicket;
+    @Basic(optional = false)
+    @Column(name = "precio_ticket")
+    private int precioTicket;
     @Basic(optional = false)
     @Column(name = "id_estacionamiento")
     private int idEstacionamiento;
@@ -47,8 +51,9 @@ public class Ticket implements Serializable {
         this.idTicket = idTicket;
     }
 
-    public Ticket(Integer idTicket, int idEstacionamiento) {
+    public Ticket(Integer idTicket, int precioTicket, int idEstacionamiento) {
         this.idTicket = idTicket;
+        this.precioTicket = precioTicket;
         this.idEstacionamiento = idEstacionamiento;
     }
 
@@ -58,6 +63,14 @@ public class Ticket implements Serializable {
 
     public void setIdTicket(Integer idTicket) {
         this.idTicket = idTicket;
+    }
+
+    public int getPrecioTicket() {
+        return precioTicket;
+    }
+
+    public void setPrecioTicket(int precioTicket) {
+        this.precioTicket = precioTicket;
     }
 
     public int getIdEstacionamiento() {
