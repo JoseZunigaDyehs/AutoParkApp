@@ -28,7 +28,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Ticket.findAll", query = "SELECT t FROM Ticket t")
     , @NamedQuery(name = "Ticket.findByIdTicket", query = "SELECT t FROM Ticket t WHERE t.idTicket = :idTicket")
     , @NamedQuery(name = "Ticket.findByPrecioTicket", query = "SELECT t FROM Ticket t WHERE t.precioTicket = :precioTicket")
-    , @NamedQuery(name = "Ticket.findByIdEstacionamiento", query = "SELECT t FROM Ticket t WHERE t.idEstacionamiento = :idEstacionamiento")})
+    , @NamedQuery(name = "Ticket.findByIdEstacionamiento", query = "SELECT t FROM Ticket t WHERE t.idEstacionamiento = :idEstacionamiento")
+    , @NamedQuery(name = "Ticket.findByEstadoTicket", query = "SELECT t FROM Ticket t WHERE t.estadoTicket = :estadoTicket")})
 public class Ticket implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -43,6 +44,9 @@ public class Ticket implements Serializable {
     @Basic(optional = false)
     @Column(name = "id_estacionamiento")
     private int idEstacionamiento;
+    @Basic(optional = false)
+    @Column(name = "estado_ticket")
+    private int estadoTicket;
 
     public Ticket() {
     }
@@ -51,10 +55,11 @@ public class Ticket implements Serializable {
         this.idTicket = idTicket;
     }
 
-    public Ticket(Integer idTicket, int precioTicket, int idEstacionamiento) {
+    public Ticket(Integer idTicket, int precioTicket, int idEstacionamiento, int estadoTicket) {
         this.idTicket = idTicket;
         this.precioTicket = precioTicket;
         this.idEstacionamiento = idEstacionamiento;
+        this.estadoTicket = estadoTicket;
     }
 
     public Integer getIdTicket() {
@@ -79,6 +84,14 @@ public class Ticket implements Serializable {
 
     public void setIdEstacionamiento(int idEstacionamiento) {
         this.idEstacionamiento = idEstacionamiento;
+    }
+
+    public int getEstadoTicket() {
+        return estadoTicket;
+    }
+
+    public void setEstadoTicket(int estadoTicket) {
+        this.estadoTicket = estadoTicket;
     }
 
     @Override
