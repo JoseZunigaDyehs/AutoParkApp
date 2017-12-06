@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Dec 06, 2017 at 02:40 PM
+-- Generation Time: Dec 06, 2017 at 08:50 PM
 -- Server version: 5.7.19
 -- PHP Version: 5.6.31
 
@@ -35,6 +35,7 @@ CREATE TABLE IF NOT EXISTS `boucher` (
   `id_pago` int(11) NOT NULL,
   `id_envio` int(11) NOT NULL,
   `id_ticket` int(11) NOT NULL,
+  `estado_boucher` int(11) NOT NULL,
   PRIMARY KEY (`id_boucher`),
   KEY `id_pago` (`id_pago`),
   KEY `id_envio` (`id_envio`),
@@ -53,7 +54,7 @@ CREATE TABLE IF NOT EXISTS `cliente` (
   `nombre_cliente` varchar(20) NOT NULL,
   `telefono_cliente` varchar(12) NOT NULL,
   `email_cliente` varchar(50) NOT NULL,
-  `id_boucher` varchar(50) NOT NULL,
+  `id_boucher` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`rut_cliente`),
   KEY `id_boucher` (`id_boucher`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;

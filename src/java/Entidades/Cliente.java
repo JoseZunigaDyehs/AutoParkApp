@@ -45,7 +45,6 @@ public class Cliente implements Serializable {
     @Basic(optional = false)
     @Column(name = "email_cliente")
     private String emailCliente;
-    @Basic(optional = false)
     @Column(name = "id_boucher")
     private String idBoucher;
 
@@ -56,12 +55,11 @@ public class Cliente implements Serializable {
         this.rutCliente = rutCliente;
     }
 
-    public Cliente(String rutCliente, String nombreCliente, String telefonoCliente, String emailCliente, String idBoucher) {
+    public Cliente(String rutCliente, String nombreCliente, String telefonoCliente, String emailCliente) {
         this.rutCliente = rutCliente;
         this.nombreCliente = nombreCliente;
         this.telefonoCliente = telefonoCliente;
         this.emailCliente = emailCliente;
-        this.idBoucher = idBoucher;
     }
 
     public String getRutCliente() {

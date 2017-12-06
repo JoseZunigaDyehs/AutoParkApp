@@ -30,7 +30,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Boucher.findByTotalBoucher", query = "SELECT b FROM Boucher b WHERE b.totalBoucher = :totalBoucher")
     , @NamedQuery(name = "Boucher.findByIdPago", query = "SELECT b FROM Boucher b WHERE b.idPago = :idPago")
     , @NamedQuery(name = "Boucher.findByIdEnvio", query = "SELECT b FROM Boucher b WHERE b.idEnvio = :idEnvio")
-    , @NamedQuery(name = "Boucher.findByIdTicket", query = "SELECT b FROM Boucher b WHERE b.idTicket = :idTicket")})
+    , @NamedQuery(name = "Boucher.findByIdTicket", query = "SELECT b FROM Boucher b WHERE b.idTicket = :idTicket")
+    , @NamedQuery(name = "Boucher.findByEstadoBoucher", query = "SELECT b FROM Boucher b WHERE b.estadoBoucher = :estadoBoucher")})
 public class Boucher implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -51,6 +52,9 @@ public class Boucher implements Serializable {
     @Basic(optional = false)
     @Column(name = "id_ticket")
     private int idTicket;
+    @Basic(optional = false)
+    @Column(name = "estado_boucher")
+    private int estadoBoucher;
 
     public Boucher() {
     }
@@ -59,12 +63,13 @@ public class Boucher implements Serializable {
         this.idBoucher = idBoucher;
     }
 
-    public Boucher(Integer idBoucher, String totalBoucher, int idPago, int idEnvio, int idTicket) {
+    public Boucher(Integer idBoucher, String totalBoucher, int idPago, int idEnvio, int idTicket, int estadoBoucher) {
         this.idBoucher = idBoucher;
         this.totalBoucher = totalBoucher;
         this.idPago = idPago;
         this.idEnvio = idEnvio;
         this.idTicket = idTicket;
+        this.estadoBoucher = estadoBoucher;
     }
 
     public Integer getIdBoucher() {
@@ -105,6 +110,14 @@ public class Boucher implements Serializable {
 
     public void setIdTicket(int idTicket) {
         this.idTicket = idTicket;
+    }
+
+    public int getEstadoBoucher() {
+        return estadoBoucher;
+    }
+
+    public void setEstadoBoucher(int estadoBoucher) {
+        this.estadoBoucher = estadoBoucher;
     }
 
     @Override

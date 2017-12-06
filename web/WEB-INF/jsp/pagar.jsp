@@ -24,19 +24,19 @@
                             <div class="bg-white p-3 border my-3 box-shadow">
                                 <div class="form-group d-flex align-items-center">
                                     <label class="w-25">Rut: </label>
-                                    <input type="text" class="form-control"  placeholder="Ingresa rut">
+                                    <input type="text" class="form-control"  placeholder="Ingresa rut" name="txtRut" value="${cliente.getRutCliente()}">
                                 </div>
                                 <div class="form-group d-flex align-items-center">
                                     <label class="w-25">Nombre:</label>
-                                    <input type="text" class="form-control" placeholder="Ingresa nombre">
+                                    <input type="text" class="form-control" placeholder="Ingresa nombre"  name="txtNombre" value="${cliente.getNombreCliente()}">
                                 </div>
                                 <div class="form-group d-flex align-items-center">
                                     <label class="w-25">Teléfono:</label>
-                                    <input type="text" class="form-control" placeholder="Ingresa teléfono">
+                                    <input type="text" class="form-control" placeholder="Ingresa teléfono"  name="txtTelefono" value="${cliente.getTelefonoCliente()}">
                                 </div>
                                 <div class="form-group d-flex align-items-center">
                                     <label class="w-25">Email: </label>
-                                    <input type="email" class="form-control" placeholder="Ingresa email">
+                                    <input type="email" class="form-control" placeholder="Ingresa email"  name="txtEmail" value="${cliente.getEmailCliente()}">
                                 </div>
                             </div>
                         </div>
@@ -68,7 +68,7 @@
                                 <div class="form-group d-flex align-items-center w-100 mb-0">
                                     <div class="form-group d-flex flex-column w-75">
                                         <label class="mb-0"><small>Estacionamientos: </small></label>
-                                        <select class="custom-select mr-sm-2 mb-sm-0 w-100 mr-2" id="inlineFormCustomSelect">
+                                        <select class="custom-select mr-sm-2 mb-sm-0 w-100 mr-2" name="slcEstacionamiento">
                                             <option selected>Seleccione...</option>
                                         <c:forEach var="estacionamiento" items="${estacionamientos}">
                                             <option value="${estacionamiento.getIdEstacionamiento()}">${estacionamiento.getNombreEstacionamiento()}</option>
@@ -82,11 +82,12 @@
 
                                 </div>
                                 <div class="d-flex justify-content-end">
-                                    <a href="#!" class="btn btn-secondary"> Agregar</a>
+                                    <button class="btn btn-secondary" type="submit" name="btnAgregarEstacionamiento" value="true">Agregar</button>
                                 </div>
 
                             </div>
                         </div>
+
                         <table class="table table-sm table-hover table-morado">
                             <thead>
                                 <tr>
@@ -97,6 +98,7 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                <c:forEach items="${tickets}" var="ticket">
                                 <tr>
                                     <th>1</th>
                                     <td>Mark</td>
@@ -105,6 +107,8 @@
                                         <a href="#!"><i class="fa fa-minus-circle" aria-hidden="true"></i></a>
                                     </td>
                                 </tr>
+                                </c:forEach>
+
                                 <tr>
                                     <th>2</th>
                                     <td>Jacob</td>
