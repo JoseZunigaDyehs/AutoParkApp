@@ -1,5 +1,9 @@
 # AutoParkApp
-Hecho en Java
+Examen Transversal de Java
 
-#Tecnologías usadas:
-Spring, Hibernate, MySQL
+# Tecnologías usadas:
+Java, Spring, Hibernate, MySQL
+
+# Integrantes
+Luciano Rodriguez
+José Zúñiga
