@@ -29,7 +29,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "Boucher.findAll", query = "SELECT b FROM Boucher b")
     , @NamedQuery(name = "Boucher.findByIdBoucher", query = "SELECT b FROM Boucher b WHERE b.idBoucher = :idBoucher")
-    , @NamedQuery(name = "Boucher.findByRutCliente", query = "SELECT b FROM Boucher b WHERE b.cliente.rutCliente = :rutCliente")
+        , @NamedQuery(name = "Boucher.findByRutCliente", query = "SELECT b FROM Boucher b WHERE b.cliente.rutCliente = :rutCliente")
     , @NamedQuery(name = "Boucher.findByTotalBoucher", query = "SELECT b FROM Boucher b WHERE b.totalBoucher = :totalBoucher")})
 public class Boucher implements Serializable {
 

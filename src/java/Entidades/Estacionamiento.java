@@ -32,8 +32,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Estacionamiento.findAll", query = "SELECT e FROM Estacionamiento e")
     , @NamedQuery(name = "Estacionamiento.findByIdEstacionamiento", query = "SELECT e FROM Estacionamiento e WHERE e.idEstacionamiento = :idEstacionamiento")
     , @NamedQuery(name = "Estacionamiento.findByNombreEstacionamiento", query = "SELECT e FROM Estacionamiento e WHERE e.nombreEstacionamiento = :nombreEstacionamiento")
-    , @NamedQuery(name = "Estacionamiento.findByLongitudEstacionamiento", query = "SELECT e FROM Estacionamiento e WHERE e.longitudEstacionamiento = :longitudEstacionamiento")
-    , @NamedQuery(name = "Estacionamiento.findByLatitudEstacionamiento", query = "SELECT e FROM Estacionamiento e WHERE e.latitudEstacionamiento = :latitudEstacionamiento")})
+    , @NamedQuery(name = "Estacionamiento.findByLinkEstacionamiento", query = "SELECT e FROM Estacionamiento e WHERE e.linkEstacionamiento = :linkEstacionamiento")})
 public class Estacionamiento implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -46,11 +45,8 @@ public class Estacionamiento implements Serializable {
     @Column(name = "nombre_estacionamiento")
     private String nombreEstacionamiento;
     @Basic(optional = false)
-    @Column(name = "longitud_estacionamiento")
-    private String longitudEstacionamiento;
-    @Basic(optional = false)
-    @Column(name = "latitud_estacionamiento")
-    private String latitudEstacionamiento;
+    @Column(name = "link_estacionamiento")
+    private String linkEstacionamiento;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "estacionamiento")
     private Collection<Ticket> ticketCollection;
 
@@ -61,11 +57,10 @@ public class Estacionamiento implements Serializable {
         this.idEstacionamiento = idEstacionamiento;
     }
 
-    public Estacionamiento(Integer idEstacionamiento, String nombreEstacionamiento, String longitudEstacionamiento, String latitudEstacionamiento) {
+    public Estacionamiento(Integer idEstacionamiento, String nombreEstacionamiento, String linkEstacionamiento) {
         this.idEstacionamiento = idEstacionamiento;
         this.nombreEstacionamiento = nombreEstacionamiento;
-        this.longitudEstacionamiento = longitudEstacionamiento;
-        this.latitudEstacionamiento = latitudEstacionamiento;
+        this.linkEstacionamiento = linkEstacionamiento;
     }
 
     public Integer getIdEstacionamiento() {
@@ -84,20 +79,12 @@ public class Estacionamiento implements Serializable {
         this.nombreEstacionamiento = nombreEstacionamiento;
     }
 
-    public String getLongitudEstacionamiento() {
-        return longitudEstacionamiento;
+    public String getLinkEstacionamiento() {
+        return linkEstacionamiento;
     }
 
-    public void setLongitudEstacionamiento(String longitudEstacionamiento) {
-        this.longitudEstacionamiento = longitudEstacionamiento;
-    }
-
-    public String getLatitudEstacionamiento() {
-        return latitudEstacionamiento;
-    }
-
-    public void setLatitudEstacionamiento(String latitudEstacionamiento) {
-        this.latitudEstacionamiento = latitudEstacionamiento;
+    public void setLinkEstacionamiento(String linkEstacionamiento) {
+        this.linkEstacionamiento = linkEstacionamiento;
     }
 
     @XmlTransient

@@ -50,7 +50,7 @@
                                         <th>
                                             <c:forEach items="${tickets}" var="ticket">
                                                 <c:if test="${ticket.getIdBoucher() == boucher.getIdBoucher()}">
-                                                    ${ticket.getEstacionamiento().getNombreEstacionamiento()}
+                                                    ${ticket.getEstacionamiento().getNombreEstacionamiento()} - 
                                                 </c:if>
                                             </c:forEach>
                                             

@@ -17,6 +17,12 @@
         <body class="d-flex">
         <jsp:include page="_header.jsp"></jsp:include>
             <main class="w-80">
+                <c:if test="${not empty errores}">
+                    <div class="bg-danger py-2 text-center mb-0"></div>
+                    <c:forEach items="${errores}" var="err">
+                        <h6 class="text-white mb-0">${err}</h6>
+                    </c:forEach>
+                </c:if>
                 <c:if test="${not empty error}">
                     <h5 class="bg-warning py-2 text-center mb-0">${error}</h5>
                 </c:if>

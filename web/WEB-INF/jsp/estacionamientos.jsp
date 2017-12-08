@@ -36,7 +36,7 @@
                                             ${estacionamiento.getNombreEstacionamiento()}
                                         </th>
                                         <td>
-                                            <a href="https://www.google.cl/maps/@${estacionamiento.getLongitudEstacionamiento()},${estacionamiento.getLatitudEstacionamiento()}">Ver Más</a>
+                                            <a href="${estacionamiento.getLinkEstacionamiento()}" target="_blank">Ver Más</a>
                                         </td>
                                     </tr>
                                 </c:forEach>
@@ -44,7 +44,8 @@
                             </table>
                         </div>
                     </div>
-
+                    
+                    
                 </div>
 
             </main>
