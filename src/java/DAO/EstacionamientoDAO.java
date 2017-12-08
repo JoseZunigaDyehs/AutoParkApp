@@ -61,32 +61,6 @@ public class EstacionamientoDAO {
         return estacionamiento;
     }
     
-    /*
-    *ESTE METODO LO DEJE COMENTADO PORQUE SOLO DEBEN EXISTIR 6 TIPOS DE ESTACIONAMIENTOS.
-    */
-    
-    /* public boolean AgregarEstacionamiento(Estacionamiento estacionamiento) {
-
-        boolean agregado = false;
-
-        this.sesion = HibernateUtil.getSessionFactory().openSession();
-        try {
-
-            Transaction tx = sesion.beginTransaction();
-            sesion.save(estacionamiento);
-            tx.commit();
-            agregado = true;
-
-        } catch (Exception ex) {
-            Logger.getLogger(EstacionamientoDAO.class.getName()).error(ex.getMessage());
-        } finally {
-            this.sesion.close();
-
-        }
-        Logger.getLogger(EstacionamientoDAO.class.getName()).info("Se agrego correctamente el Estacionamiento");
-        return agregado;
-    }*/
-    
     public boolean ModificarEstacionamiento(Estacionamiento estacionamiento) {
 
         boolean modificado = false;

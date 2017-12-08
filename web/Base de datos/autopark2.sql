@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Dec 06, 2017 at 08:50 PM
+-- Generation Time: Dec 08, 2017 at 12:46 AM
 -- Server version: 5.7.19
 -- PHP Version: 5.6.31
 
@@ -19,7 +19,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `autopark`
+-- Database: `autopark2`
 --
 
 -- --------------------------------------------------------
@@ -31,16 +31,15 @@ SET time_zone = "+00:00";
 DROP TABLE IF EXISTS `boucher`;
 CREATE TABLE IF NOT EXISTS `boucher` (
   `id_boucher` int(11) NOT NULL AUTO_INCREMENT,
-  `total_boucher` varchar(25) NOT NULL,
+  `total_boucher` int(50) NOT NULL,
   `id_pago` int(11) NOT NULL,
   `id_envio` int(11) NOT NULL,
   `id_ticket` int(11) NOT NULL,
-  `estado_boucher` int(11) NOT NULL,
   PRIMARY KEY (`id_boucher`),
-  KEY `id_pago` (`id_pago`),
-  KEY `id_envio` (`id_envio`),
-  KEY `id_ticket` (`id_ticket`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+  KEY `boucher_pago` (`id_pago`),
+  KEY `boucher_envio` (`id_envio`),
+  KEY `boucher_ticket` (`id_ticket`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -54,10 +53,10 @@ CREATE TABLE IF NOT EXISTS `cliente` (
   `nombre_cliente` varchar(20) NOT NULL,
   `telefono_cliente` varchar(12) NOT NULL,
   `email_cliente` varchar(50) NOT NULL,
-  `id_boucher` varchar(50) DEFAULT NULL,
+  `id_boucher` int(11) NOT NULL,
   PRIMARY KEY (`rut_cliente`),
-  KEY `id_boucher` (`id_boucher`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+  KEY `cliente_boucher` (`id_boucher`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -67,10 +66,10 @@ CREATE TABLE IF NOT EXISTS `cliente` (
 
 DROP TABLE IF EXISTS `envio`;
 CREATE TABLE IF NOT EXISTS `envio` (
-  `id_envio` int(11) NOT NULL,
-  `nombre_envio` varchar(25) NOT NULL,
+  `id_envio` int(11) NOT NULL AUTO_INCREMENT,
+  `nombre_envio` varchar(20) NOT NULL,
   PRIMARY KEY (`id_envio`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `envio`
@@ -93,7 +92,7 @@ CREATE TABLE IF NOT EXISTS `estacionamiento` (
   `longitud_estacionamiento` varchar(50) NOT NULL,
   `latitud_estacionamiento` varchar(50) NOT NULL,
   PRIMARY KEY (`id_estacionamiento`)
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `estacionamiento`
@@ -111,10 +110,10 @@ INSERT INTO `estacionamiento` (`id_estacionamiento`, `nombre_estacionamiento`, `
 
 DROP TABLE IF EXISTS `pago`;
 CREATE TABLE IF NOT EXISTS `pago` (
-  `id_pago` int(11) NOT NULL,
+  `id_pago` int(11) NOT NULL AUTO_INCREMENT,
   `nombre_pago` varchar(20) NOT NULL,
   PRIMARY KEY (`id_pago`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `pago`
@@ -134,12 +133,43 @@ INSERT INTO `pago` (`id_pago`, `nombre_pago`) VALUES
 DROP TABLE IF EXISTS `ticket`;
 CREATE TABLE IF NOT EXISTS `ticket` (
   `id_ticket` int(11) NOT NULL AUTO_INCREMENT,
-  `precio_ticket` int(11) NOT NULL,
+  `precio_ticket` int(50) NOT NULL,
   `id_estacionamiento` int(11) NOT NULL,
   `estado_ticket` int(11) NOT NULL,
   PRIMARY KEY (`id_ticket`),
-  KEY `id_estacionamiento` (`id_estacionamiento`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+  KEY `ticket_estacionamiento` (`id_estacionamiento`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `ticket`
+--
+
+INSERT INTO `ticket` (`id_ticket`, `precio_ticket`, `id_estacionamiento`, `estado_ticket`) VALUES
+(8, 123123, 2, 222220);
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `boucher`
+--
+ALTER TABLE `boucher`
+  ADD CONSTRAINT `boucher_envio` FOREIGN KEY (`id_envio`) REFERENCES `envio` (`id_envio`),
+  ADD CONSTRAINT `boucher_pago` FOREIGN KEY (`id_pago`) REFERENCES `pago` (`id_pago`),
+  ADD CONSTRAINT `boucher_ticket` FOREIGN KEY (`id_ticket`) REFERENCES `ticket` (`id_ticket`);
+
+--
+-- Constraints for table `cliente`
+--
+ALTER TABLE `cliente`
+  ADD CONSTRAINT `cliente_boucher` FOREIGN KEY (`id_boucher`) REFERENCES `boucher` (`id_boucher`);
+
+--
+-- Constraints for table `ticket`
+--
+ALTER TABLE `ticket`
+  ADD CONSTRAINT `ticket_estacionamiento` FOREIGN KEY (`id_estacionamiento`) REFERENCES `estacionamiento` (`id_estacionamiento`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

@@ -60,4 +60,22 @@ public class BoucherDAO {
         }
         return boucher;
     }
+    
+    public boolean agregarBoucher(Boucher boucher){
+        boolean agregado = false;
+        this.sesion = HibernateUtil.getSessionFactory().openSession();
+        try {
+            Transaction tx = sesion.beginTransaction();
+            sesion.save(boucher);
+            tx.commit();
+            agregado = true;
+            
+        } catch (Exception ex) {
+            Logger.getLogger(BoucherDAO.class.getName()).error(ex.getMessage());
+        } finally {
+            this.sesion.close();
+        }
+        Logger.getLogger(BoucherDAO.class.getName()).info("Se agrego correctamente el boucher");
+        return agregado;
+    }
 }

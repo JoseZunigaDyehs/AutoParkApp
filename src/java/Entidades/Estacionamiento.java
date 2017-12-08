@@ -6,7 +6,9 @@
 package Entidades;
 
 import java.io.Serializable;
+import java.util.Collection;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -14,12 +16,14 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author jose.zuniga
+ * @author Jose
  */
 @Entity
 @Table(name = "estacionamiento")
@@ -47,6 +51,8 @@ public class Estacionamiento implements Serializable {
     @Basic(optional = false)
     @Column(name = "latitud_estacionamiento")
     private String latitudEstacionamiento;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "estacionamiento")
+    private Collection<Ticket> ticketCollection;
 
     public Estacionamiento() {
     }
@@ -92,6 +98,15 @@ public class Estacionamiento implements Serializable {
 
     public void setLatitudEstacionamiento(String latitudEstacionamiento) {
         this.latitudEstacionamiento = latitudEstacionamiento;
+    }
+
+    @XmlTransient
+    public Collection<Ticket> getTicketCollection() {
+        return ticketCollection;
+    }
+
+    public void setTicketCollection(Collection<Ticket> ticketCollection) {
+        this.ticketCollection = ticketCollection;
     }
 
     @Override

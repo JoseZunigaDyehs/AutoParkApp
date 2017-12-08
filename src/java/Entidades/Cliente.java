@@ -10,6 +10,8 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -17,7 +19,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author jose.zuniga
+ * @author Jose
  */
 @Entity
 @Table(name = "cliente")
@@ -27,8 +29,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Cliente.findByRutCliente", query = "SELECT c FROM Cliente c WHERE c.rutCliente = :rutCliente")
     , @NamedQuery(name = "Cliente.findByNombreCliente", query = "SELECT c FROM Cliente c WHERE c.nombreCliente = :nombreCliente")
     , @NamedQuery(name = "Cliente.findByTelefonoCliente", query = "SELECT c FROM Cliente c WHERE c.telefonoCliente = :telefonoCliente")
-    , @NamedQuery(name = "Cliente.findByEmailCliente", query = "SELECT c FROM Cliente c WHERE c.emailCliente = :emailCliente")
-    , @NamedQuery(name = "Cliente.findByIdBoucher", query = "SELECT c FROM Cliente c WHERE c.idBoucher = :idBoucher")})
+    , @NamedQuery(name = "Cliente.findByEmailCliente", query = "SELECT c FROM Cliente c WHERE c.emailCliente = :emailCliente")})
 public class Cliente implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -45,8 +46,9 @@ public class Cliente implements Serializable {
     @Basic(optional = false)
     @Column(name = "email_cliente")
     private String emailCliente;
-    @Column(name = "id_boucher")
-    private String idBoucher;
+    @JoinColumn(name = "id_boucher", referencedColumnName = "id_boucher")
+    @ManyToOne(optional = false)
+    private Boucher boucher;
 
     public Cliente() {
     }
@@ -94,12 +96,12 @@ public class Cliente implements Serializable {
         this.emailCliente = emailCliente;
     }
 
-    public String getIdBoucher() {
-        return idBoucher;
+    public Boucher getBoucher() {
+        return boucher;
     }
 
-    public void setIdBoucher(String idBoucher) {
-        this.idBoucher = idBoucher;
+    public void setBoucher(Boucher boucher) {
+        this.boucher = boucher;
     }
 
     @Override

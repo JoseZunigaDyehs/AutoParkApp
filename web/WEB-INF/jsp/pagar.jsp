@@ -17,6 +17,12 @@
         <body class="d-flex">
         <jsp:include page="_header.jsp"></jsp:include>
             <main class="w-80">
+                <c:if test="${not empty error}">
+                    <h5 class="bg-warning py-2 text-center mb-0">${error}</h5>
+                </c:if>
+                <c:if test="${not empty exito}">
+                    <h5 class="bg-success py-2 text-center mb-0 text-white">${exito}</h5>
+                </c:if>
                 <div class="container">
                     <form class="row py-4" method="post" action="">
                         <div class="col-8">
@@ -43,22 +49,46 @@
                         <div class="col-4 mt-5">
                             <h4 class="mb-3">Opciones de pago</h4>
                         <c:forEach var="pago" items="${pagos}">
-                            <div class="form-check">
-                                <label class="form-check-label">
-                                    <input class="form-check-input" type="radio" name="rbOpcionesPago" value="${pago.getIdPago()}" checked>
-                                    ${pago.getNombrePago()}
-                                </label>
-                            </div>                            
+                            <c:choose>
+                                <c:when test="${pago.getIdPago()==idOpcionPago}">
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input class="form-check-input" type="radio" name="rbOpcionesPago" value="${pago.getIdPago()}" selected="true" checked>
+                                            ${pago.getNombrePago()}
+                                        </label>
+                                    </div>
+                                </c:when>
+                                <c:when test="${pago.getIdPago()!=idOpcionPago}">
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input class="form-check-input" type="radio" name="rbOpcionesPago" value="${pago.getIdPago()}">
+                                            ${pago.getNombrePago()}
+                                        </label>
+                                    </div>  
+                                </c:when>
+                            </c:choose>      
                         </c:forEach>
 
                         <h4 class="mb-3 mt-3 border-top pt-2">Opciones de envío boleta</h4>
                         <c:forEach var="envio" items="${envios}">
-                            <div class="form-check">
-                                <label class="form-check-label">
-                                    <input class="form-check-input" type="radio" name="rbEnvio" value="${envio.getIdEnvio()}" checked>
-                                    ${envio.getNombreEnvio()}
-                                </label>
-                            </div>                            
+                            <c:choose>
+                                <c:when test="${envio.getIdEnvio()==idEnvio}">
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input class="form-check-input" type="radio" name="rbEnvio" value="${envio.getIdEnvio()}" selected="true" checked>
+                                            ${envio.getNombreEnvio()}
+                                        </label>
+                                    </div>  
+                                </c:when>
+                                <c:when test="${envio.getIdEnvio()!=idEnvio}">
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input class="form-check-input" type="radio" name="rbEnvio" value="${envio.getIdEnvio()}">
+                                            ${envio.getNombreEnvio()}
+                                        </label>
+                                    </div>  
+                                </c:when>
+                            </c:choose>
                         </c:forEach>
                     </div>
                     <div class="col-8">
@@ -87,7 +117,7 @@
 
                             </div>
                         </div>
-
+                        <c:if test="${not empty estacionamientosTicket}">
                         <table class="table table-sm table-hover table-morado">
                             <thead>
                                 <tr>
@@ -98,39 +128,23 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <c:forEach items="${tickets}" var="ticket">
+                                <c:forEach items="${estacionamientosTicket}" var="ticket">
                                 <tr>
-                                    <th>1</th>
-                                    <td>Mark</td>
-                                    <td>Otto</td>
+                                    <th>${ticket.getEstacionamiento().getNombreEstacionamiento()}</th>
+                                    <td>${ticket.getPrecioTicket()}</td>
+                                    <td>${ticket.getIdTicket()}</td>
                                     <td>
-                                        <a href="#!"><i class="fa fa-minus-circle" aria-hidden="true"></i></a>
+                                        <a href="pagar.htm?eliminar=${ticket.getIdTicket()}&rut=${cliente.getRutCliente()}0"><i class="fa fa-minus-circle" aria-hidden="true"></i></a>
                                     </td>
                                 </tr>
                                 </c:forEach>
-
-                                <tr>
-                                    <th>2</th>
-                                    <td>Jacob</td>
-                                    <td>Thornton</td>
-                                    <td>
-                                        <a href="#!"><i class="fa fa-minus-circle" aria-hidden="true"></i></a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th>3</th>
-                                    <td colspan="2">Larry the Bird</td>
-                                    <td>
-                                        <a href="#!"><i class="fa fa-minus-circle" aria-hidden="true"></i></a>
-                                    </td>
-                                </tr>
                             </tbody>
                         </table>
                         <div class="d-flex justify-content-between px-4">
                             <h5>$ 7.000</h5>
                             <button type="submit" class="btn btn-primary">Pagar</button>
                         </div>
-
+                        </c:if>
 
                     </div>
                 </form>

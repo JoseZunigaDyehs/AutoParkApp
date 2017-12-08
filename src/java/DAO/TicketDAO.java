@@ -75,4 +75,59 @@ public class TicketDAO {
         
         return tickets;
     }
+    
+    public List<Ticket> listarTicketPorEstado(int estadoTicket){
+        List<Ticket> tickets = null;
+        
+        this.sesion = HibernateUtil.getSessionFactory().openSession();
+        try {
+            Transaction tx = this.sesion.beginTransaction();
+            Query q = this.sesion.getNamedQuery("Ticket.findByEstadoTicket");
+            q.setInteger("estadoTicket", estadoTicket);
+            tickets = q.list();
+        } catch (Exception ex) {
+            Logger.getLogger(TicketDAO.class.getName()).error(ex.getMessage());
+        }finally{
+            this.sesion.close();
+        }
+        
+        return tickets;
+    }
+    
+    public boolean eliminarTicket(Ticket ticket){
+        boolean eliminado = false;
+        
+        this.sesion = HibernateUtil.getSessionFactory().openSession();
+        try {
+            Transaction tx = sesion.beginTransaction();
+            sesion.delete(ticket);
+            tx.commit();
+            eliminado = true;
+            
+        } catch (Exception ex) {
+            Logger.getLogger(TicketDAO.class.getName()).error(ex.getMessage());
+        }finally{
+            this.sesion.close();
+        }
+        Logger.getLogger(TicketDAO.class.getName()).info("Se eliminó correctamente el ticket");
+        return eliminado;
+    }
+    
+    public Ticket buscarTicket(int id){
+        Ticket ticket = null;
+        
+        this.sesion = HibernateUtil.getSessionFactory().openSession();
+        try {
+            Transaction tx = this.sesion.beginTransaction();
+            Query q = this.sesion.getNamedQuery("Ticket.findByIdTicket");
+            q.setInteger("idTicket", id);
+            ticket = (Ticket) q.list().get(0);
+        } catch (Exception ex) {
+            Logger.getLogger(TicketDAO.class.getName()).error(ex.getMessage());
+        }finally{
+            this.sesion.close();
+        }
+        
+        return ticket;
+    }
 }   

@@ -6,20 +6,26 @@
 package Entidades;
 
 import java.io.Serializable;
+import java.util.Collection;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author jose.zuniga
+ * @author Jose
  */
 @Entity
 @Table(name = "ticket")
@@ -28,7 +34,6 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Ticket.findAll", query = "SELECT t FROM Ticket t")
     , @NamedQuery(name = "Ticket.findByIdTicket", query = "SELECT t FROM Ticket t WHERE t.idTicket = :idTicket")
     , @NamedQuery(name = "Ticket.findByPrecioTicket", query = "SELECT t FROM Ticket t WHERE t.precioTicket = :precioTicket")
-    , @NamedQuery(name = "Ticket.findByIdEstacionamiento", query = "SELECT t FROM Ticket t WHERE t.idEstacionamiento = :idEstacionamiento")
     , @NamedQuery(name = "Ticket.findByEstadoTicket", query = "SELECT t FROM Ticket t WHERE t.estadoTicket = :estadoTicket")})
 public class Ticket implements Serializable {
 
@@ -42,11 +47,13 @@ public class Ticket implements Serializable {
     @Column(name = "precio_ticket")
     private int precioTicket;
     @Basic(optional = false)
-    @Column(name = "id_estacionamiento")
-    private int idEstacionamiento;
-    @Basic(optional = false)
     @Column(name = "estado_ticket")
     private int estadoTicket;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "ticket")
+    private Collection<Boucher> boucherCollection;
+    @JoinColumn(name = "id_estacionamiento", referencedColumnName = "id_estacionamiento")
+    @ManyToOne(optional = false)
+    private Estacionamiento estacionamiento;
 
     public Ticket() {
     }
@@ -55,10 +62,9 @@ public class Ticket implements Serializable {
         this.idTicket = idTicket;
     }
 
-    public Ticket(Integer idTicket, int precioTicket, int idEstacionamiento, int estadoTicket) {
+    public Ticket(Integer idTicket, int precioTicket, int estadoTicket) {
         this.idTicket = idTicket;
         this.precioTicket = precioTicket;
-        this.idEstacionamiento = idEstacionamiento;
         this.estadoTicket = estadoTicket;
     }
 
@@ -78,20 +84,29 @@ public class Ticket implements Serializable {
         this.precioTicket = precioTicket;
     }
 
-    public int getIdEstacionamiento() {
-        return idEstacionamiento;
-    }
-
-    public void setIdEstacionamiento(int idEstacionamiento) {
-        this.idEstacionamiento = idEstacionamiento;
-    }
-
     public int getEstadoTicket() {
         return estadoTicket;
     }
 
     public void setEstadoTicket(int estadoTicket) {
         this.estadoTicket = estadoTicket;
+    }
+
+    @XmlTransient
+    public Collection<Boucher> getBoucherCollection() {
+        return boucherCollection;
+    }
+
+    public void setBoucherCollection(Collection<Boucher> boucherCollection) {
+        this.boucherCollection = boucherCollection;
+    }
+
+    public Estacionamiento getEstacionamiento() {
+        return estacionamiento;
+    }
+
+    public void setEstacionamiento(Estacionamiento estacionamiento) {
+        this.estacionamiento = estacionamiento;
     }
 
     @Override

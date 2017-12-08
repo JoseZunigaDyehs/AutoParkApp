@@ -6,20 +6,26 @@
 package Entidades;
 
 import java.io.Serializable;
+import java.util.Collection;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author jose.zuniga
+ * @author Jose
  */
 @Entity
 @Table(name = "boucher")
@@ -27,11 +33,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "Boucher.findAll", query = "SELECT b FROM Boucher b")
     , @NamedQuery(name = "Boucher.findByIdBoucher", query = "SELECT b FROM Boucher b WHERE b.idBoucher = :idBoucher")
-    , @NamedQuery(name = "Boucher.findByTotalBoucher", query = "SELECT b FROM Boucher b WHERE b.totalBoucher = :totalBoucher")
-    , @NamedQuery(name = "Boucher.findByIdPago", query = "SELECT b FROM Boucher b WHERE b.idPago = :idPago")
-    , @NamedQuery(name = "Boucher.findByIdEnvio", query = "SELECT b FROM Boucher b WHERE b.idEnvio = :idEnvio")
-    , @NamedQuery(name = "Boucher.findByIdTicket", query = "SELECT b FROM Boucher b WHERE b.idTicket = :idTicket")
-    , @NamedQuery(name = "Boucher.findByEstadoBoucher", query = "SELECT b FROM Boucher b WHERE b.estadoBoucher = :estadoBoucher")})
+    , @NamedQuery(name = "Boucher.findByTotalBoucher", query = "SELECT b FROM Boucher b WHERE b.totalBoucher = :totalBoucher")})
 public class Boucher implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -42,19 +44,18 @@ public class Boucher implements Serializable {
     private Integer idBoucher;
     @Basic(optional = false)
     @Column(name = "total_boucher")
-    private String totalBoucher;
-    @Basic(optional = false)
-    @Column(name = "id_pago")
-    private int idPago;
-    @Basic(optional = false)
-    @Column(name = "id_envio")
-    private int idEnvio;
-    @Basic(optional = false)
-    @Column(name = "id_ticket")
-    private int idTicket;
-    @Basic(optional = false)
-    @Column(name = "estado_boucher")
-    private int estadoBoucher;
+    private int totalBoucher;
+    @JoinColumn(name = "id_envio", referencedColumnName = "id_envio")
+    @ManyToOne(optional = false)
+    private Envio envio;
+    @JoinColumn(name = "id_pago", referencedColumnName = "id_pago")
+    @ManyToOne(optional = false)
+    private Pago pago;
+    @JoinColumn(name = "id_ticket", referencedColumnName = "id_ticket")
+    @ManyToOne(optional = false)
+    private Ticket ticket;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "boucher")
+    private Collection<Cliente> clienteCollection;
 
     public Boucher() {
     }
@@ -63,13 +64,9 @@ public class Boucher implements Serializable {
         this.idBoucher = idBoucher;
     }
 
-    public Boucher(Integer idBoucher, String totalBoucher, int idPago, int idEnvio, int idTicket, int estadoBoucher) {
+    public Boucher(Integer idBoucher, int totalBoucher) {
         this.idBoucher = idBoucher;
         this.totalBoucher = totalBoucher;
-        this.idPago = idPago;
-        this.idEnvio = idEnvio;
-        this.idTicket = idTicket;
-        this.estadoBoucher = estadoBoucher;
     }
 
     public Integer getIdBoucher() {
@@ -80,44 +77,45 @@ public class Boucher implements Serializable {
         this.idBoucher = idBoucher;
     }
 
-    public String getTotalBoucher() {
+    public int getTotalBoucher() {
         return totalBoucher;
     }
 
-    public void setTotalBoucher(String totalBoucher) {
+    public void setTotalBoucher(int totalBoucher) {
         this.totalBoucher = totalBoucher;
     }
 
-    public int getIdPago() {
-        return idPago;
+    public Envio getEnvio() {
+        return envio;
     }
 
-    public void setIdPago(int idPago) {
-        this.idPago = idPago;
+    public void setEnvio(Envio envio) {
+        this.envio = envio;
     }
 
-    public int getIdEnvio() {
-        return idEnvio;
+    public Pago getPago() {
+        return pago;
     }
 
-    public void setIdEnvio(int idEnvio) {
-        this.idEnvio = idEnvio;
+    public void setPago(Pago pago) {
+        this.pago = pago;
     }
 
-    public int getIdTicket() {
-        return idTicket;
+    public Ticket getTicket() {
+        return ticket;
     }
 
-    public void setIdTicket(int idTicket) {
-        this.idTicket = idTicket;
+    public void setTicket(Ticket ticket) {
+        this.ticket = ticket;
     }
 
-    public int getEstadoBoucher() {
-        return estadoBoucher;
+    @XmlTransient
+    public Collection<Cliente> getClienteCollection() {
+        return clienteCollection;
     }
 
-    public void setEstadoBoucher(int estadoBoucher) {
-        this.estadoBoucher = estadoBoucher;
+    public void setClienteCollection(Collection<Cliente> clienteCollection) {
+        this.clienteCollection = clienteCollection;
     }
 
     @Override

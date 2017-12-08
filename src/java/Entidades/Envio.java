@@ -6,18 +6,24 @@
 package Entidades;
 
 import java.io.Serializable;
+import java.util.Collection;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author jose.zuniga
+ * @author Jose
  */
 @Entity
 @Table(name = "envio")
@@ -30,12 +36,15 @@ public class Envio implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id_envio")
     private Integer idEnvio;
     @Basic(optional = false)
     @Column(name = "nombre_envio")
     private String nombreEnvio;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "envio")
+    private Collection<Boucher> boucherCollection;
 
     public Envio() {
     }
@@ -63,6 +72,15 @@ public class Envio implements Serializable {
 
     public void setNombreEnvio(String nombreEnvio) {
         this.nombreEnvio = nombreEnvio;
+    }
+
+    @XmlTransient
+    public Collection<Boucher> getBoucherCollection() {
+        return boucherCollection;
+    }
+
+    public void setBoucherCollection(Collection<Boucher> boucherCollection) {
+        this.boucherCollection = boucherCollection;
     }
 
     @Override
