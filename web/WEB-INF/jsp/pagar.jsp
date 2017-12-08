@@ -112,7 +112,7 @@
 
                                 </div>
                                 <div class="d-flex justify-content-end">
-                                    <button class="btn btn-secondary" type="submit" name="btnAgregarEstacionamiento" value="true">Agregar</button>
+                                    <button class="btn btn-secondary" type="submit" name="boton" value="agregar">Agregar</button>
                                 </div>
 
                             </div>
@@ -134,15 +134,18 @@
                                     <td>${ticket.getPrecioTicket()}</td>
                                     <td>${ticket.getIdTicket()}</td>
                                     <td>
-                                        <a href="pagar.htm?eliminar=${ticket.getIdTicket()}&rut=${cliente.getRutCliente()}0"><i class="fa fa-minus-circle" aria-hidden="true"></i></a>
+                                        <input type="hidden" name="estacionamientoEliminar" value="${ticket.getIdTicket()}">
+                                        <input type="hidden" name="rutEliminar" value="${cliente.getRutCliente()}0">
+                                        <button type="submit" class=""  name="boton" value="eliminar"><i class="fa fa-minus-circle" aria-hidden="true"></i></button>
+
                                     </td>
                                 </tr>
                                 </c:forEach>
                             </tbody>
                         </table>
                         <div class="d-flex justify-content-between px-4">
-                            <h5>$ 7.000</h5>
-                            <button type="submit" class="btn btn-primary">Pagar</button>
+                            <h5>$ ${precioTotal}</h5>
+                            <button type="submit" class="btn btn-primary" name="boton" value="">Pagar</button>
                         </div>
                         </c:if>
 

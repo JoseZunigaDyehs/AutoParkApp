@@ -25,14 +25,11 @@ public class ClienteDAO {
 
     public Cliente findByRutCliente(int rut) {
         Cliente cliente = null;
-        this.sesion = HibernateUtil.getSessionFactory().getCurrentSession();
+        this.sesion = HibernateUtil.getSessionFactory().openSession();
         try {
-
-            Transaction tx = this.sesion.beginTransaction();
             Query q = this.sesion.getNamedQuery("Cliente.findByRutCliente");
             q.setInteger("rutCliente", rut);
             cliente = (Cliente) q.list().get(0);
-
         } catch (Exception ex) {
 
             Logger.getLogger(EnvioDAO.class.getName()).error(ex.getMessage());

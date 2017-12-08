@@ -22,7 +22,7 @@
                     <div class="row py-5 justify-content-center">
                         <div class="col-10 bg-white border pt-5 px-4 box-shadow">
                             <div class="d-flex justify-content-between">
-                                <h3>BOUCHER N°</h3><h3>XXXX</h3>
+                                <h3>BOUCHER N°</h3><h3>${boucher.getIdBoucher()}</h3>
                             </div>
                             <div class="py-4">
                                 <table class="table table-sm table-hover table-morado">
@@ -31,41 +31,29 @@
                                             <th scope="col">Estacionamiento</th>
                                             <th scope="col">Monto</th>
                                             <th scope="col">N° Ticket</th>
-                                            <th scope="col"></th>
+<!--                                            <th scope="col"></th>-->
                                         </tr>
                                     </thead>
                                     <tbody>
+                                    <c:forEach items="${tickets}" var="ticket">
                                         <tr>
-                                            <th>1</th>
-                                            <td>Mark</td>
-                                            <td>Otto</td>
-                                            <td>
+                                            <th>${ticket.getEstacionamiento().getNombreEstacionamiento()}</th>
+                                            <td>${ticket.getPrecioTicket()}</td>
+                                            <td>${ticket.getIdTicket()}</td>
+<!--                                            <td>
                                                 <a href="#!"><i class="fa fa-minus-circle" aria-hidden="true"></i></a>
-                                            </td>
+                                            </td>-->
                                         </tr>
-                                        <tr>
-                                            <th>2</th>
-                                            <td>Jacob</td>
-                                            <td>Thornton</td>
-                                            <td>
-                                                <a href="#!"><i class="fa fa-minus-circle" aria-hidden="true"></i></a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <th>3</th>
-                                            <td colspan="2">Larry the Bird</td>
-                                            <td>
-                                                <a href="#!"><i class="fa fa-minus-circle" aria-hidden="true"></i></a>
-                                            </td>
-                                        </tr>
+                                    </c:forEach>
+
                                     </tbody>
                                 </table>
                             </div>
                             <div class="d-flex justify-content-between">
-                                <h4>TOTAL A PAGAR: </h4> <h4>XXXXXXXXX</h4>
+                                <h4>TOTAL A PAGAR: </h4> <h4>$ ${boucher.getTotalBoucher()}</h4>
                             </div>
                             <div class="d-flex justify-content-between">
-                                <h4>OPCIÓN DE ENVÍO: </h4> <h4>XXXXXXXXX</h4>
+                                <h4>OPCIÓN DE ENVÍO: </h4> <h4>${boucher.getEnvio().getNombreEnvio()}</h4>
                             </div>
                             <div class="d-flex justify-content-between py-3 pt-5">
                                 <p class="font-italic">Muchas gracias por preferirnos</p>

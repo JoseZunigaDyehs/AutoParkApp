@@ -46,110 +46,47 @@ public class pagoController {
     
     @RequestMapping(value = "verPagos.htm",method = RequestMethod.GET)
     public ModelAndView verPagosView(HttpServletRequest request){
-
+        
         ModelAndView mv = new ModelAndView("pagos");
+        mv.addObject("bouchers", null);
+        return mv;
+        
+    }
+    
+    @RequestMapping(value = "verPagos.htm",method = RequestMethod.POST)
+    public ModelAndView buscarPagos(HttpServletRequest request){
+        
+        ModelAndView mv = new ModelAndView("pagos");
+        String rut = request.getParameter("txtRut");
+        if(rut==null){
+            mv.addObject("error", "Debe ingresar un rut");
+            return mv;
+        }else if(rut.equals("")){
+            mv.addObject("error", "Debe ingresar un rut");
+            return mv;
+        }
+        int rutCliente = Integer.parseInt(rut);
+        BoucherDAO boucherDAO = new BoucherDAO();
+        List<Boucher> bouchers = boucherDAO.listarPorIdCliente(rutCliente);
+        if(bouchers==null){
+            mv.addObject("error", "No se han encontrado pagos");
+            return mv;
+        }
+        mv.addObject("bouchers", bouchers);
+        TicketDAO ticketDAO = new TicketDAO();
+        mv.addObject("tickets", ticketDAO.listarTicket());
         return mv;
         
     }
     
     @RequestMapping(value = "pagar.htm",method = RequestMethod.POST)
     public ModelAndView formularioPago(HttpServletRequest request){
-        ModelAndView mv = null;
-        String btn = request.getParameter("btnAgregarEstacionamiento");
-        //SI btn == true => ES AGREGAR EL ESTACIONAMIENTO
-        if(btn.equals("true")){
-            mv = agregarEstacionamiento(request);
-        }else{ //ACA SE DEBE AGREGAR EL BOUCHER Y PASAR A LA OTRA VISTA
-        
-        }
-        return mv;
-    }
-    
-    /**
-     * Metodo que envía el cliente a la vista y agrega tickets temporalmente (CON ESTADO RUT+0)
-     * @param request
-     * @return 
-     */
-    public ModelAndView agregarEstacionamiento(HttpServletRequest request){
-
+        //ModelAndView mv = null;
+        String boton = request.getParameter("boton");
         ModelAndView mv = new ModelAndView("pagar");
-        
+        int rut = Integer.parseInt(request.getParameter("txtRut"));
         //CLIENTE
-        String rut = request.getParameter("txtRut");
-        String nombre = request.getParameter("txtNombre");
-        String telefono = request.getParameter("txtTelefono");
-        String email = request.getParameter("txtEmail");
-        Cliente cliente = new Cliente();
-        cliente.setEmailCliente(email);
-        cliente.setNombreCliente(nombre);
-        cliente.setRutCliente(rut);
-        cliente.setTelefonoCliente(telefono);
-        mv.addObject("cliente",cliente);
-
-        //OPCIONES DE PAGO
-        int idOpcionPago = Integer.parseInt(request.getParameter("rbOpcionesPago"));
-        mv.addObject("idOpcionPago",idOpcionPago);
-        PagoDAO pagoDAO = new PagoDAO();
-        mv.addObject("pagos", pagoDAO.ListarPago());
-        
-        //ID ENVIO
-        int idEnvio = Integer.parseInt(request.getParameter("rbEnvio"));
-        mv.addObject("idEnvio",idEnvio);
-        EnvioDAO envioDAO = new EnvioDAO();
-        mv.addObject("envios", envioDAO.listarEnvio());
-        
-        //ESTACIONAMIENTO
-        Estacionamiento estacionamiento = new Estacionamiento();
-        int idEstacionamiento = Integer.parseInt(request.getParameter("slcEstacionamiento"));
-        estacionamiento.setIdEstacionamiento(idEstacionamiento);
-        EstacionamientoDAO estacionamientoDAO = new EstacionamientoDAO();
-        mv.addObject("estacionamientos", estacionamientoDAO.listarEstacionamientos());
-        //VALIDAR YA AGREGÓ EL ESTACIONAMIENTO
-        int estadoTicket = Integer.parseInt(rut+"0");//EL CERO ES ESTADO GUARDADO
-        TicketDAO ticketDAO = new TicketDAO();
-        List<Ticket> listaEstacionamientos = ticketDAO.listarTicketPorEstado(estadoTicket);
-        if(!validarEstacionamiento(listaEstacionamientos,idEstacionamiento)){
-            mv.addObject("estacionamientosTicket", listaEstacionamientos);
-            mv.addObject("error", "Ya existe el estacionamiento agregado");
-            return mv;
-        }
-        
-        //AGREGAR TICKET
-        int precio = Integer.parseInt(request.getParameter("txtMonto"));
-        Ticket ticket = new Ticket();
-        ticket.setPrecioTicket(precio);
-        ticket.setEstadoTicket(estadoTicket);
-        ticket.setEstacionamiento(estacionamiento);
-        
-        if(!ticketDAO.agregarTicket(ticket)){
-            mv.addObject("error","No se ha podido agregar el estacionamiento");
-        }else{
-            mv.addObject("estacionamientosTicket", ticketDAO.listarTicketPorEstado(estadoTicket));
-            mv.addObject("exito", "Se ha agregado el estacionamiento");
-        }
-        
-        return mv;
-    }
-    
-    /**
-     * Metodo que agregar boucher con tickets y cliente
-     * @param request
-     * @return 
-     */
-    public ModelAndView agregarBoucher(HttpServletRequest request){
-
-        ModelAndView mv = new ModelAndView("pagar");
-        
-        //CLIENTE
-        String rut = request.getParameter("txtRut");
-        String nombre = request.getParameter("txtNombre");
-        String telefono = request.getParameter("txtTelefono");
-        String email = request.getParameter("txtEmail");
-        Cliente cliente = new Cliente();
-        cliente.setEmailCliente(email);
-        cliente.setNombreCliente(nombre);
-        cliente.setRutCliente(rut);
-        cliente.setTelefonoCliente(telefono);
+        Cliente cliente = crearCliente(request);
         mv.addObject("cliente",cliente);
 
         //OPCIONES DE PAGO
@@ -166,47 +103,120 @@ public class pagoController {
         mv.addObject("envios", envioDAO.listarEnvio());
         Envio envio = new Envio(idEnvio);
         
-        //ESTACIONAMIENTO
-        Estacionamiento estacionamiento = new Estacionamiento();
-        int idEstacionamiento = Integer.parseInt(request.getParameter("slcEstacionamiento"));
-        estacionamiento.setIdEstacionamiento(idEstacionamiento);
+        //ESTACIONAMIENTOS
         EstacionamientoDAO estacionamientoDAO = new EstacionamientoDAO();
         mv.addObject("estacionamientos", estacionamientoDAO.listarEstacionamientos());
         int estadoTicket = Integer.parseInt(rut+"0");//EL CERO ES ESTADO GUARDADO
         TicketDAO ticketDAO = new TicketDAO();
-        List<Ticket> listaEstacionamientos = ticketDAO.listarTicketPorEstado(estadoTicket);
+        List<Ticket> listaEstacionamientosAgregados = ticketDAO.listarTicketPorEstado(estadoTicket);
+        mv.addObject("estacionamientosTicket", listaEstacionamientosAgregados);
         
-        //AGREGAR TICKET
-        int precio = Integer.parseInt(request.getParameter("txtMonto"));
-        Ticket ticket = new Ticket();
-        ticket.setPrecioTicket(precio);
-        ticket.setEstadoTicket(estadoTicket);
-        ticket.setEstacionamiento(estacionamiento);
-        
-        if(!ticketDAO.agregarTicket(ticket)){
-            mv.addObject("error","No se ha podido agregar el estacionamiento");
-        }else{
-            mv.addObject("estacionamientosTicket", ticketDAO.listarTicketPorEstado(estadoTicket));
-            mv.addObject("exito", "Se ha agregado el estacionamiento");
+        switch (boton) {
+            case "agregar":
+                Estacionamiento estacionamiento = new Estacionamiento();
+                int idEstacionamiento = Integer.parseInt(request.getParameter("slcEstacionamiento"));
+                estacionamiento.setIdEstacionamiento(idEstacionamiento);
+                //AGREGAR TICKET
+                int precio = Integer.parseInt(request.getParameter("txtMonto"));
+                Ticket ticket = new Ticket();
+                ticket.setPrecioTicket(precio);
+                ticket.setEstadoTicket(estadoTicket);
+                ticket.setEstacionamiento(estacionamiento);
+                
+                if(!validarEstacionamiento(listaEstacionamientosAgregados,idEstacionamiento)){
+                    mv.addObject("error", "Ya existe el estacionamiento agregado");
+                    return mv;
+                } 
+                
+                if(!ticketDAO.agregarTicket(ticket)){
+                    mv.addObject("error","No se ha podido agregar el estacionamiento");
+                }else{
+                    mv.addObject("estacionamientosTicket", ticketDAO.listarTicketPorEstado(estadoTicket));
+                    //CALCULAR TOTAL
+                    int total = calcularTotal(ticketDAO.listarTicketPorEstado(estadoTicket));
+                    mv.addObject("precioTotal", total);
+                    mv.addObject("exito", "Se ha agregado el estacionamiento");
+                }   break;
+            case "eliminar":
+                int idEstac = Integer.parseInt(request.getParameter("estacionamientoEliminar"));
+                ticket = ticketDAO.buscarTicket(idEstac);
+                String rutEliminar = request.getParameter("rutEliminar");
+                if(ticketDAO.eliminarTicket(ticket)){
+                    mv.addObject("estacionamientosTicket", ticketDAO.listarTicketPorEstado(Integer.parseInt(rutEliminar)));
+                    //CALCULAR TOTAL
+                    int total = calcularTotal(ticketDAO.listarTicketPorEstado(estadoTicket));
+                    mv.addObject("precioTotal", total);
+                    mv.addObject("exito", "Se ha eliminado el estacionamiento");
+                }else{
+                    mv.addObject("estacionamientosTicket", ticketDAO.listarTicketPorEstado(Integer.parseInt(rutEliminar)));
+                    mv.addObject("error", "No se ha eliminado el estacionamiento");
+                }   break;
+            default:
+                //CALCULAR TOTAL
+                int total = calcularTotal(listaEstacionamientosAgregados);
+                mv.addObject("precioTotal", total);
+
+
+                //VALIDAR SI CLIENTE EXISTE Y WEAS
+                ClienteDAO clienteDAO = new ClienteDAO();
+                if(clienteDAO.findByRutCliente(cliente.getRutCliente())==null){
+                    if(!clienteDAO.AgregarCliente(cliente)){
+                        mv.addObject("error","No se ha podido agregar el cliente");
+                        return mv;
+                    }else{
+                        mv.addObject("estacionamientosTicket", ticketDAO.listarTicketPorEstado(estadoTicket));
+                        mv.addObject("exito", "Se ha agregado el cliente");
+                        //mv.setViewName("pagos.htm");
+                    };
+                }
+
+                //BOUCHER
+                Boucher boucher = new Boucher();
+                boucher.setEnvio(envio);
+                boucher.setPago(pago);
+                boucher.setTotalBoucher(total);
+                boucher.setCliente(cliente);
+                BoucherDAO boucherDAO = new BoucherDAO();
+                if(!boucherDAO.agregarBoucher(boucher)){
+                    mv.addObject("error","No se ha podido agregar el boucher");
+                }else{
+                    mv.addObject("estacionamientosTicket", ticketDAO.listarTicketPorEstado(estadoTicket));
+                    mv.addObject("exito", "Se ha agregado el boucher");
+                }
+                //Modifica idBoucher y estadoTicket de los ticket agregados
+                modificarListaAgregada(listaEstacionamientosAgregados,ticketDAO,boucher.getIdBoucher());
+                
+                mv = verBoucher(request,boucher,cliente);
+                
         }
-        
-        //BOUCHER
-        Boucher boucher = new Boucher();
-        boucher.setEnvio(envio);
-        boucher.setTicket(ticket);
-        boucher.setPago(pago);
-        boucher.setTotalBoucher(estadoTicket);
-        BoucherDAO boucherDAO = new BoucherDAO();
-        
-        if(!boucherDAO.agregarBoucher(boucher)){
-            mv.addObject("error","No se ha podido agregar el boucher");
-        }else{
-            mv.addObject("estacionamientosTicket", ticketDAO.listarTicketPorEstado(estadoTicket));
-            mv.addObject("exito", "Se ha agregado el boucher");
-            mv.setViewName("pagos.htm");
-        }
-        
+
+
         return mv;
+
+
+    }
+
+    public ModelAndView verBoucher(HttpServletRequest request,Boucher boucher, Cliente cliente){
+
+        ModelAndView mv = new ModelAndView("boucher");
+        
+        TicketDAO ticketDAO = new TicketDAO();
+        List<Ticket> tickets = ticketDAO.listarTicketPorBoucher(boucher.getIdBoucher());
+        EnvioDAO envioDAO = new EnvioDAO();
+        Envio envio = envioDAO.findByIdEnvio(boucher.getEnvio().getIdEnvio());
+        boucher.setEnvio(envio);
+        mv.addObject("tickets",tickets);
+        mv.addObject("boucher", boucher);
+        return mv;
+        
+    }
+    
+    private int calcularTotal(List<Ticket> listaEstacionamientosAgregados) {
+        int precioTotal = 0;
+        for (Ticket listaEstacionamientosAgregado : listaEstacionamientosAgregados) {
+            precioTotal += listaEstacionamientosAgregado.getPrecioTicket();
+        }
+        return precioTotal;
     }
 
     private boolean validarEstacionamiento(List<Ticket> listaTickets, int idEstacionamiento) {
@@ -218,24 +228,26 @@ public class pagoController {
         return valido;
     }
     
-    @RequestMapping(value = "pagar.htm",method = RequestMethod.GET, params = {"eliminar", "rut"})
-    public ModelAndView eliminarEstacionamiento(HttpServletRequest request){
-        ModelAndView mv = new ModelAndView("pagar");
-        int idEstacionamiento = Integer.parseInt(request.getParameter("eliminar"));
-        int rut = Integer.parseInt(request.getParameter("rut"));
-        
-        TicketDAO ticketDAO = new TicketDAO();
-        Ticket ticket = ticketDAO.buscarTicket(idEstacionamiento);
-        if(ticketDAO.eliminarTicket(ticket)){
-            mv.addObject("estacionamientosTicket", ticketDAO.listarTicketPorEstado(rut));
-            mv.addObject("exito", "Se ha eliminado el estacionamiento");
-        }else{
-            mv.addObject("estacionamientosTicket", ticketDAO.listarTicketPorEstado(rut));
-            mv.addObject("error", "No se ha eliminado el estacionamiento");
+
+    private Cliente crearCliente(HttpServletRequest request) {
+        Cliente cliente = new Cliente();
+        int rut = Integer.parseInt(request.getParameter("txtRut"));
+        String nombre = request.getParameter("txtNombre");
+        String telefono = request.getParameter("txtTelefono");
+        String email = request.getParameter("txtEmail");
+        cliente.setEmailCliente(email);
+        cliente.setNombreCliente(nombre);
+        cliente.setRutCliente(rut);
+        cliente.setTelefonoCliente(telefono);
+        return cliente;
+    }
+
+    private void modificarListaAgregada(List<Ticket> listaEstacionamientosAgregados,TicketDAO ticketDAO, int idBoucher) {
+        for (Ticket listaEstacionamientosAgregado : listaEstacionamientosAgregados) {
+            listaEstacionamientosAgregado.setEstadoTicket(1);
+            listaEstacionamientosAgregado.setIdBoucher(idBoucher);
+            ticketDAO.modificarTicket(listaEstacionamientosAgregado);
         }
-        
-        return mv;
-        
     }
 
 }

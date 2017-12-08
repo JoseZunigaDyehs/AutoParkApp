@@ -43,7 +43,7 @@ public class BoucherDAO {
 
     public Boucher findByIdEstacionamiento(int id) {
         Boucher boucher = null;
-        this.sesion = HibernateUtil.getSessionFactory().getCurrentSession();
+        this.sesion = HibernateUtil.getSessionFactory().openSession();
         try {
 
             Transaction tx = this.sesion.beginTransaction();
@@ -59,6 +59,24 @@ public class BoucherDAO {
             this.sesion.close();
         }
         return boucher;
+    }
+    
+    public List<Boucher> listarPorIdCliente(int rutCliente){
+        List<Boucher> bouchers = null;
+
+        this.sesion = HibernateUtil.getSessionFactory().openSession();
+        try {
+            Transaction tx = this.sesion.beginTransaction();
+            Query q = this.sesion.getNamedQuery("Boucher.findByRutCliente");
+            q.setInteger("rutCliente", rutCliente);
+            bouchers = q.list();
+        } catch (Exception ex) {
+            Logger.getLogger(EnvioDAO.class.getName()).error(ex.getMessage());
+        } finally {
+            this.sesion.close();
+        }
+
+        return bouchers;
     }
     
     public boolean agregarBoucher(Boucher boucher){

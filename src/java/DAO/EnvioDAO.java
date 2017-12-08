@@ -42,15 +42,15 @@ public class EnvioDAO {
         return envios;
     }
     
-    public Pago findByIdPago(int id){
-        Pago pago = null;
-        this.sesion = HibernateUtil.getSessionFactory().getCurrentSession();
+    public Envio findByIdEnvio(int id){
+        Envio envio = null;
+        this.sesion = HibernateUtil.getSessionFactory().openSession();
         try {
             
             Transaction tx = this.sesion.beginTransaction();
-            Query q = this.sesion.getNamedQuery("Pago.findByIdPago");
-            q.setInteger("idPago", id);
-            pago = (Pago) q.list().get(0);
+            Query q = this.sesion.getNamedQuery("Envio.findByIdEnvio");
+            q.setInteger("idEnvio", id);
+            envio = (Envio) q.list().get(0);
             
         } catch (Exception ex) {
             
@@ -59,7 +59,7 @@ public class EnvioDAO {
         }finally{
             this.sesion.close();
         }
-        return pago;
+        return envio;
     }
     
 }

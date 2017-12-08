@@ -6,16 +6,18 @@
 package Entidades;
 
 import java.io.Serializable;
+import java.util.Collection;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -36,7 +38,7 @@ public class Cliente implements Serializable {
     @Id
     @Basic(optional = false)
     @Column(name = "rut_cliente")
-    private String rutCliente;
+    private Integer rutCliente;
     @Basic(optional = false)
     @Column(name = "nombre_cliente")
     private String nombreCliente;
@@ -46,29 +48,28 @@ public class Cliente implements Serializable {
     @Basic(optional = false)
     @Column(name = "email_cliente")
     private String emailCliente;
-    @JoinColumn(name = "id_boucher", referencedColumnName = "id_boucher")
-    @ManyToOne(optional = false)
-    private Boucher boucher;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cliente")
+    private Collection<Boucher> boucherCollection;
 
     public Cliente() {
     }
 
-    public Cliente(String rutCliente) {
+    public Cliente(Integer rutCliente) {
         this.rutCliente = rutCliente;
     }
 
-    public Cliente(String rutCliente, String nombreCliente, String telefonoCliente, String emailCliente) {
+    public Cliente(Integer rutCliente, String nombreCliente, String telefonoCliente, String emailCliente) {
         this.rutCliente = rutCliente;
         this.nombreCliente = nombreCliente;
         this.telefonoCliente = telefonoCliente;
         this.emailCliente = emailCliente;
     }
 
-    public String getRutCliente() {
+    public Integer getRutCliente() {
         return rutCliente;
     }
 
-    public void setRutCliente(String rutCliente) {
+    public void setRutCliente(Integer rutCliente) {
         this.rutCliente = rutCliente;
     }
 
@@ -96,12 +97,13 @@ public class Cliente implements Serializable {
         this.emailCliente = emailCliente;
     }
 
-    public Boucher getBoucher() {
-        return boucher;
+    @XmlTransient
+    public Collection<Boucher> getBoucherCollection() {
+        return boucherCollection;
     }
 
-    public void setBoucher(Boucher boucher) {
-        this.boucher = boucher;
+    public void setBoucherCollection(Collection<Boucher> boucherCollection) {
+        this.boucherCollection = boucherCollection;
     }
 
     @Override

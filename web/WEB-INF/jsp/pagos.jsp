@@ -18,6 +18,9 @@
         <body class="d-flex">
         <jsp:include page="_header.jsp"></jsp:include>
             <main class="w-80">
+                <c:if test="${not empty error}">
+                    <h5 class="bg-warning py-2 text-center mb-0">${error}</h5>
+                </c:if>
                 <div class="container">
                     <div class="row py-4 justify-content-center">
                         <form method="post" action="" class="col-10">
@@ -25,11 +28,12 @@
                                 <div class="bg-white p-3 border my-3 box-shadow">
                                     <div class="form-group d-flex align-items-center">
                                         <label class="mr-3">Rut: </label>
-                                        <input type="text" class="form-control mr-3"  placeholder="Ingresa rut">
+                                        <input type="text" class="form-control mr-3"  placeholder="Ingresa rut" name="txtRut">
                                         <button type="submit" class="px-3 btn btn-primary">Buscar</button>
                                     </div>
                                 </div>
                         </form>
+                    <c:if test="${not empty bouchers}">
                         <div class="col-10">
                             <h4 class="mb-3">Pagos encontrados:</h4>
                             <table class="table table-sm table-hover table-morado">
@@ -41,37 +45,28 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                <c:forEach items="${bouchers}" var="boucher">
                                     <tr>
-                                        <th>1</th>
-                                        <td>Mark</td>
+                                        <th>
+                                            <c:forEach items="${tickets}" var="ticket">
+                                                <c:if test="${ticket.getIdBoucher() == boucher.getIdBoucher()}">
+                                                    ${ticket.getEstacionamiento().getNombreEstacionamiento()}
+                                                </c:if>
+                                            </c:forEach>
+                                            
+                                        </th>
+                                        <td>$ ${boucher.getTotalBoucher()}</td>
                                         <td>
-                                            <a href="#!"><i class="fa fa-plus-circle" aria-hidden="true"></i></a>
+                                            <a href="boucher.htm?boucher=${boucher.getIdBoucher()}"><i class="fa fa-plus-circle" aria-hidden="true"></i></a>
                                         </td>
                                     </tr>
-                                    <tr>
-                                        <th>2</th>
-                                        <td>Jacob</td>
-                                        <td>
-                                            <a href="#!"><i class="fa fa-plus-circle" aria-hidden="true"></i></a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th>1</th>
-                                        <td>Mark</td>
-                                        <td>
-                                            <a href="#!"><i class="fa fa-plus-circle" aria-hidden="true"></i></a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th>2</th>
-                                        <td>Jacob</td>
-                                        <td>
-                                            <a href="#!"><i class="fa fa-plus-circle" aria-hidden="true"></i></a>
-                                        </td>
-                                    </tr>
+                                </c:forEach>
                                 </tbody>
                             </table>
                         </div>
+                        
+                    </c:if>
+                       
                     </div>
 
                 </div>

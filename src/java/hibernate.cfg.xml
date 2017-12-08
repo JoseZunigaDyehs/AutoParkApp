@@ -41,21 +41,20 @@ Contributor(s):
 -->
 <hibernate-configuration>
   <session-factory>
-        <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
-        <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
-        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/autopark2?zeroDateTimeBehavior=convertToNull</property>
-        <property name="hibernate.connection.username">root</property>
-        <property name="connection.pool_size">10</property>
-        <property name="hibernate.show_sql">true</property>
-        <property name="hibernate.current_session_context_class">managed</property>
-        <property name="hibernate.query.factory_class">org.hibernate.hql.internal.classic.ClassicQueryTranslatorFactory</property>
-        <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
-        
-        <mapping class="Entidades.Boucher"/>
-        <mapping class="Entidades.Cliente"/>
-        <mapping class="Entidades.Envio"/>
-        <mapping class="Entidades.Estacionamiento"/>
-        <mapping class="Entidades.Pago"/>
-        <mapping class="Entidades.Ticket"/>
+    <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+    <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+    <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/autopark?zeroDateTimeBehavior=convertToNull</property>
+    <property name="hibernate.connection.username">root</property>
+    <property name="connection.pool_size">10</property>
+    <property name="hibernate.show_sql">true</property>
+    <property name="hibernate.current_session_context_class">managed</property>
+    <property name="hibernate.query.factory_class">org.hibernate.hql.internal.classic.ClassicQueryTranslatorFactory</property>
+    <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+    <mapping class="Entidades.Boucher"/>
+    <mapping class="Entidades.Cliente"/>
+    <mapping class="Entidades.Envio"/>
+    <mapping class="Entidades.Estacionamiento"/>
+    <mapping class="Entidades.Pago"/>
+    <mapping class="Entidades.Ticket"/>
   </session-factory>
 </hibernate-configuration>

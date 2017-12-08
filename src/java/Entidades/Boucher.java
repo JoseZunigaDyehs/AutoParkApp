@@ -6,9 +6,7 @@
 package Entidades;
 
 import java.io.Serializable;
-import java.util.Collection;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -18,10 +16,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -33,6 +29,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Boucher.findAll", query = "SELECT b FROM Boucher b")
     , @NamedQuery(name = "Boucher.findByIdBoucher", query = "SELECT b FROM Boucher b WHERE b.idBoucher = :idBoucher")
+    , @NamedQuery(name = "Boucher.findByRutCliente", query = "SELECT b FROM Boucher b WHERE b.cliente.rutCliente = :rutCliente")
     , @NamedQuery(name = "Boucher.findByTotalBoucher", query = "SELECT b FROM Boucher b WHERE b.totalBoucher = :totalBoucher")})
 public class Boucher implements Serializable {
 
@@ -45,17 +42,15 @@ public class Boucher implements Serializable {
     @Basic(optional = false)
     @Column(name = "total_boucher")
     private int totalBoucher;
+    @JoinColumn(name = "rut_cliente", referencedColumnName = "rut_cliente")
+    @ManyToOne(optional = false)
+    private Cliente cliente;
     @JoinColumn(name = "id_envio", referencedColumnName = "id_envio")
     @ManyToOne(optional = false)
     private Envio envio;
     @JoinColumn(name = "id_pago", referencedColumnName = "id_pago")
     @ManyToOne(optional = false)
     private Pago pago;
-    @JoinColumn(name = "id_ticket", referencedColumnName = "id_ticket")
-    @ManyToOne(optional = false)
-    private Ticket ticket;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "boucher")
-    private Collection<Cliente> clienteCollection;
 
     public Boucher() {
     }
@@ -85,6 +80,14 @@ public class Boucher implements Serializable {
         this.totalBoucher = totalBoucher;
     }
 
+    public Cliente getCliente() {
+        return cliente;
+    }
+
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
+    }
+
     public Envio getEnvio() {
         return envio;
     }
@@ -99,23 +102,6 @@ public class Boucher implements Serializable {
 
     public void setPago(Pago pago) {
         this.pago = pago;
-    }
-
-    public Ticket getTicket() {
-        return ticket;
-    }
-
-    public void setTicket(Ticket ticket) {
-        this.ticket = ticket;
-    }
-
-    @XmlTransient
-    public Collection<Cliente> getClienteCollection() {
-        return clienteCollection;
-    }
-
-    public void setClienteCollection(Collection<Cliente> clienteCollection) {
-        this.clienteCollection = clienteCollection;
     }
 
     @Override

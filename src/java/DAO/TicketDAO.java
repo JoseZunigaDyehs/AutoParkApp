@@ -59,12 +59,12 @@ public class TicketDAO {
         Logger.getLogger(TicketDAO.class.getName()).info("Se modifico correctamente el Ticket");
         return modificado;
     }
+    
     public List<Ticket> listarTicket(){
         List<Ticket> tickets = null;
         
         this.sesion = HibernateUtil.getSessionFactory().openSession();
         try {
-            Transaction tx = this.sesion.beginTransaction();
             Query q = this.sesion.getNamedQuery("Ticket.findAll");
             tickets = q.list();
         } catch (Exception ex) {
@@ -81,9 +81,25 @@ public class TicketDAO {
         
         this.sesion = HibernateUtil.getSessionFactory().openSession();
         try {
-            Transaction tx = this.sesion.beginTransaction();
             Query q = this.sesion.getNamedQuery("Ticket.findByEstadoTicket");
             q.setInteger("estadoTicket", estadoTicket);
+            tickets = q.list();
+        } catch (Exception ex) {
+            Logger.getLogger(TicketDAO.class.getName()).error(ex.getMessage());
+        }finally{
+            this.sesion.close();
+        }
+        
+        return tickets;
+    }
+    
+    public List<Ticket> listarTicketPorBoucher(int idBoucher){
+        List<Ticket> tickets = null;
+        
+        this.sesion = HibernateUtil.getSessionFactory().openSession();
+        try {
+            Query q = this.sesion.getNamedQuery("Ticket.findByIdBoucher");
+            q.setInteger("idBoucher", idBoucher);
             tickets = q.list();
         } catch (Exception ex) {
             Logger.getLogger(TicketDAO.class.getName()).error(ex.getMessage());
