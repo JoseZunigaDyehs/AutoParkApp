@@ -68,7 +68,7 @@ public class pagoController {
         int rutCliente = Integer.parseInt(rut);
         BoucherDAO boucherDAO = new BoucherDAO();
         List<Boucher> bouchers = boucherDAO.listarPorIdCliente(rutCliente);
-        if(bouchers==null){
+        if(bouchers.size()==0){
             mv.addObject("error", "No se han encontrado pagos");
             return mv;
         }
@@ -84,6 +84,33 @@ public class pagoController {
         //ModelAndView mv = null;
         String boton = request.getParameter("boton");
         ModelAndView mv = new ModelAndView("pagar");
+        
+        //BUSCAR
+        if(boton.equals("buscar")){
+            ClienteDAO clienteDAOBusqueda = new ClienteDAO();
+            int rutBuscar = Integer.parseInt(request.getParameter("txtRut"));
+            Cliente clienteEncontrado = clienteDAOBusqueda.findByRutCliente(rutBuscar);
+            if(clienteEncontrado==null){
+                mv.addObject("error","No se encuentra rut");
+                PagoDAO pagoDAO = new PagoDAO();
+                mv.addObject("pagos", pagoDAO.ListarPago());
+                EnvioDAO envioDAO = new EnvioDAO();
+                mv.addObject("envios", envioDAO.listarEnvio());
+                EstacionamientoDAO estacionamientoDAO = new EstacionamientoDAO();
+                mv.addObject("estacionamientos", estacionamientoDAO.listarEstacionamientos());
+                return mv;
+            }else{
+                mv.addObject("cliente", clienteEncontrado);
+                PagoDAO pagoDAO = new PagoDAO();
+                mv.addObject("pagos", pagoDAO.ListarPago());
+                EnvioDAO envioDAO = new EnvioDAO();
+                mv.addObject("envios", envioDAO.listarEnvio());
+                EstacionamientoDAO estacionamientoDAO = new EstacionamientoDAO();
+                mv.addObject("estacionamientos", estacionamientoDAO.listarEstacionamientos());
+                return mv;
+            }
+        }
+
         int rut = Integer.parseInt(request.getParameter("txtRut"));
         //CLIENTE
         Cliente cliente = crearCliente(request);
@@ -151,6 +178,7 @@ public class pagoController {
                     mv.addObject("estacionamientosTicket", ticketDAO.listarTicketPorEstado(Integer.parseInt(rutEliminar)));
                     mv.addObject("error", "No se ha eliminado el estacionamiento");
                 }   break;
+
             default:
                 //CALCULAR TOTAL
                 int total = calcularTotal(listaEstacionamientosAgregados);

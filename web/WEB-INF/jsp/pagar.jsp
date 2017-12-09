@@ -36,7 +36,8 @@
                             <div class="bg-white p-3 border my-3 box-shadow">
                                 <div class="form-group d-flex align-items-center">
                                     <label class="w-25">Rut: </label>
-                                    <input type="text" class="form-control"  placeholder="Ingresa rut" name="txtRut" value="${cliente.getRutCliente()}">
+                                    <input type="text" class="form-control ml-2"  placeholder="Ingresa rut" name="txtRut" value="${cliente.getRutCliente()}">
+                                <button type="submit" name="boton" value="buscar" class="btn btn-secondary ml-1"><i class="fa fa-search" aria-hidden="true"></i></button>
                                 </div>
                                 <div class="form-group d-flex align-items-center">
                                     <label class="w-25">Nombre:</label>
