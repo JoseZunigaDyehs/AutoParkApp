@@ -17,6 +17,7 @@ import Entidades.Envio;
 import Entidades.Estacionamiento;
 import Entidades.Pago;
 import Entidades.Ticket;
+import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -56,19 +57,29 @@ public class pagoController {
     @RequestMapping(value = "verPagos.htm",method = RequestMethod.POST)
     public ModelAndView buscarPagos(HttpServletRequest request){
         
-        ModelAndView mv = new ModelAndView("pagos");
-        String rut = request.getParameter("txtRut");
-        if(rut==null){
-            mv.addObject("error", "Debe ingresar un rut");
-            return mv;
-        }else if(rut.equals("")){
-            mv.addObject("error", "Debe ingresar un rut");
+        ArrayList<String> errores = new ArrayList<>();
+
+        //SE VALIDA QUE AL BUSCAR LOS PAGOS SE INGRESE ANTES EL RUT DEL CLIENTE
+        if (request.getParameter("txtRut").trim().length() == 0) {
+            errores.add("Debe ingresar un rut");
+        }
+        try {
+            Integer.parseInt(request.getParameter("txtRut"));
+        } catch (NumberFormatException ex) {
+            errores.add("El rut debe ser numérico.");
+        }
+
+        if (errores.size() > 0) {
+            request.setAttribute("error", errores);
+            ModelAndView mv = new ModelAndView("pagos");
             return mv;
         }
-        int rutCliente = Integer.parseInt(rut);
+
+        int rut = Integer.parseInt(request.getParameter("txtRut"));
         BoucherDAO boucherDAO = new BoucherDAO();
-        List<Boucher> bouchers = boucherDAO.listarPorIdCliente(rutCliente);
-        if(bouchers.size()==0){
+        List<Boucher> bouchers = boucherDAO.listarPorIdCliente(rut);
+        ModelAndView mv = new ModelAndView("pagos");
+        if (bouchers.isEmpty()) {
             mv.addObject("error", "No se han encontrado pagos");
             return mv;
         }
@@ -84,9 +95,31 @@ public class pagoController {
         //ModelAndView mv = null;
         String boton = request.getParameter("boton");
         ModelAndView mv = new ModelAndView("pagar");
-        
+        ArrayList<String> errores = new ArrayList<>();
+        boolean valido = true;
         //BUSCAR
         if(boton.equals("buscar")){
+            
+            if (request.getParameter("txtRut").trim().length() == 0) {
+                errores.add("Debe ingresar un rut");
+            }
+            try {
+                Integer.parseInt(request.getParameter("txtRut"));
+            } catch (NumberFormatException ex) {
+                errores.add("El rut debe ser numérico.");
+            }
+            
+            if (errores.size() > 0) {
+                request.setAttribute("errores", errores);
+                PagoDAO pagoDAO = new PagoDAO();
+                mv.addObject("pagos", pagoDAO.ListarPago());
+                EnvioDAO envioDAO = new EnvioDAO();
+                mv.addObject("envios", envioDAO.listarEnvio());
+                EstacionamientoDAO estacionamientoDAO = new EstacionamientoDAO();
+                mv.addObject("estacionamientos", estacionamientoDAO.listarEstacionamientos());
+                return mv;
+            }
+            
             ClienteDAO clienteDAOBusqueda = new ClienteDAO();
             int rutBuscar = Integer.parseInt(request.getParameter("txtRut"));
             Cliente clienteEncontrado = clienteDAOBusqueda.findByRutCliente(rutBuscar);
@@ -111,49 +144,142 @@ public class pagoController {
             }
         }
 
-        int rut = Integer.parseInt(request.getParameter("txtRut"));
+        //int rut = Integer.parseInt(request.getParameter("txtRut"));
         //CLIENTE
-        Cliente cliente = crearCliente(request);
-        mv.addObject("cliente",cliente);
+        Cliente cliente = new Cliente();
+        int rut;
+        String nombre;
+        String telefono;
+        String email;
 
+        if (request.getParameter("txtRut").trim().length() == 0) {
+            errores.add("El campo rut no puede estar vacío");
+        }
+        try {
+            rut = Integer.parseInt(request.getParameter("txtRut"));
+            cliente.setRutCliente(rut);
+        } catch (NumberFormatException ex) {
+            errores.add("El rut debe ser numérico.");
+        }
+        if (request.getParameter("txtNombre").trim().length() == 0) {
+            errores.add("El campo nombre no puede estar vacío");
+        }
+        if (request.getParameter("txtNombre").trim().length() > 20) {
+            errores.add("El nombre debe tener un largo maximo de 20");
+        }else{
+            nombre = request.getParameter("txtNombre");
+            cliente.setNombreCliente(nombre);
+        }
+        if (request.getParameter("txtTelefono").trim().length() == 0) {
+            errores.add("El campo nombre no puede estar vacío");
+        }
+        if (request.getParameter("txtTelefono").trim().length() > 12) {
+            errores.add("El nombre debe tener un largo maximo de 12");
+        }else{
+            telefono = request.getParameter("txtTelefono");
+            cliente.setTelefonoCliente(telefono);
+        }
+        if (request.getParameter("txtEmail").trim().length() == 0) {
+            errores.add("El campo nombre no puede estar vacío");
+        }
+        if (request.getParameter("txtEmail").trim().length() > 50) {
+            errores.add("El nombre debe tener un largo maximo de 50");
+        }else{
+            email = request.getParameter("txtEmail");
+            cliente.setEmailCliente(email);
+        }
+        if (errores.size() > 0) {
+            request.setAttribute("errores", errores);
+            valido=false;
+        }
+        //Cliente cliente = crearCliente(request);
+        mv.addObject("cliente",cliente);
+        
         //OPCIONES DE PAGO
-        int idOpcionPago = Integer.parseInt(request.getParameter("rbOpcionesPago"));
-        mv.addObject("idOpcionPago",idOpcionPago);
+        Pago pago = null;
         PagoDAO pagoDAO = new PagoDAO();
-        mv.addObject("pagos", pagoDAO.ListarPago());
-        Pago pago = new Pago(idOpcionPago);
+        if (request.getParameter("rbOpcionesPago") == null) {
+            errores.add("Seleccione el tipo de pago");
+            mv.addObject("pagos", pagoDAO.ListarPago());
+            valido=false;
+        }else{
+            int idOpcionPago = Integer.parseInt(request.getParameter("rbOpcionesPago"));
+            mv.addObject("idOpcionPago",idOpcionPago);
+            mv.addObject("pagos", pagoDAO.ListarPago());
+            pago = new Pago(idOpcionPago);
+        }
         
         //ID ENVIO
-        int idEnvio = Integer.parseInt(request.getParameter("rbEnvio"));
-        mv.addObject("idEnvio",idEnvio);
+        Envio envio = null;
         EnvioDAO envioDAO = new EnvioDAO();
-        mv.addObject("envios", envioDAO.listarEnvio());
-        Envio envio = new Envio(idEnvio);
+        if (request.getParameter("rbEnvio") == null) {
+            errores.add("Seleccione el tipo de envio");
+            mv.addObject("envios", envioDAO.listarEnvio());
+            valido=false;
+        }else{
+            int idEnvio = Integer.parseInt(request.getParameter("rbEnvio"));
+            mv.addObject("idEnvio",idEnvio);
+            mv.addObject("envios", envioDAO.listarEnvio());
+            mv.addObject("envios", envioDAO.listarEnvio());
+            envio = new Envio(idEnvio);
+        }
         
         //ESTACIONAMIENTOS
         EstacionamientoDAO estacionamientoDAO = new EstacionamientoDAO();
         mv.addObject("estacionamientos", estacionamientoDAO.listarEstacionamientos());
-        int estadoTicket = Integer.parseInt(rut+"0");//EL CERO ES ESTADO GUARDADO
+        
+        if(!valido){
+            request.setAttribute("errores", errores);
+            return mv;
+        }
+        
+        
+        //int rut = Integer.parseInt(request.getParameter("txtRut"));
+        int estadoTicket = Integer.parseInt(Integer.parseInt(request.getParameter("txtRut"))+"0");//EL CERO ES ESTADO GUARDADO
         TicketDAO ticketDAO = new TicketDAO();
         List<Ticket> listaEstacionamientosAgregados = ticketDAO.listarTicketPorEstado(estadoTicket);
         mv.addObject("estacionamientosTicket", listaEstacionamientosAgregados);
-        
+
         switch (boton) {
             case "agregar":
                 Estacionamiento estacionamiento = new Estacionamiento();
                 int idEstacionamiento = Integer.parseInt(request.getParameter("slcEstacionamiento"));
                 estacionamiento.setIdEstacionamiento(idEstacionamiento);
                 //AGREGAR TICKET
-                int precio = Integer.parseInt(request.getParameter("txtMonto"));
                 Ticket ticket = new Ticket();
-                ticket.setPrecioTicket(precio);
+                if (request.getParameter("txtMonto").length() == 0) {
+                    errores.add("El campo monto no puede estar vacio");
+                    valido = false;
+                }
+                try {
+                    int precio = Integer.parseInt(request.getParameter("txtMonto"));
+                    if(precio>=500){
+                        ticket.setPrecioTicket(Integer.parseInt(request.getParameter("txtMonto")));
+                    }else{
+                        errores.add("El monto debe ser mayor o igual a 500.");
+                        int total = calcularTotal(ticketDAO.listarTicketPorEstado(estadoTicket));
+                        mv.addObject("precioTotal", total);
+                        valido = false;
+                    }
+                } catch (NumberFormatException ex) {
+                    errores.add("El monto debe ser numérico.");
+                    valido = false;
+                }
+
                 ticket.setEstadoTicket(estadoTicket);
                 ticket.setEstacionamiento(estacionamiento);
                 
                 if(!validarEstacionamiento(listaEstacionamientosAgregados,idEstacionamiento)){
                     mv.addObject("error", "Ya existe el estacionamiento agregado");
+                    int total = calcularTotal(ticketDAO.listarTicketPorEstado(estadoTicket));
+                    mv.addObject("precioTotal", total);
                     return mv;
                 } 
+                
+                if(!valido){
+                    request.setAttribute("errores", errores);
+                    return mv;
+                }
                 
                 if(!ticketDAO.agregarTicket(ticket)){
                     mv.addObject("error","No se ha podido agregar el estacionamiento");
@@ -255,20 +381,7 @@ public class pagoController {
         }
         return valido;
     }
-    
 
-    private Cliente crearCliente(HttpServletRequest request) {
-        Cliente cliente = new Cliente();
-        int rut = Integer.parseInt(request.getParameter("txtRut"));
-        String nombre = request.getParameter("txtNombre");
-        String telefono = request.getParameter("txtTelefono");
-        String email = request.getParameter("txtEmail");
-        cliente.setEmailCliente(email);
-        cliente.setNombreCliente(nombre);
-        cliente.setRutCliente(rut);
-        cliente.setTelefonoCliente(telefono);
-        return cliente;
-    }
 
     private void modificarListaAgregada(List<Ticket> listaEstacionamientosAgregados,TicketDAO ticketDAO, int idBoucher) {
         for (Ticket listaEstacionamientosAgregado : listaEstacionamientosAgregados) {
