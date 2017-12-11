@@ -243,8 +243,17 @@ public class pagoController {
         switch (boton) {
             case "agregar":
                 Estacionamiento estacionamiento = new Estacionamiento();
-                int idEstacionamiento = Integer.parseInt(request.getParameter("slcEstacionamiento"));
-                estacionamiento.setIdEstacionamiento(idEstacionamiento);
+                int idEstacionamiento=0;
+                try {
+                    idEstacionamiento = Integer.parseInt(request.getParameter("slcEstacionamiento"));
+                    estacionamiento.setIdEstacionamiento(idEstacionamiento);
+                } catch (NumberFormatException ex) {
+                    errores.add("Debe seleccionar un estacionamiento.");
+                    request.setAttribute("errores", errores);
+                    return mv;
+                }
+                
+
                 //AGREGAR TICKET
                 Ticket ticket = new Ticket();
                 if (request.getParameter("txtMonto").length() == 0) {
