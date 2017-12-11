@@ -59,8 +59,7 @@ public class pagoController {
 
         ArrayList<String> errores = new ArrayList<>();
 
-        //ModelAndView mv = new ModelAndView("pagos");
-        //String rut = request.getParameter("txtRut");
+        
         //SE VALIDA QUE AL BUSCAR LOS PAGOS SE INGRESE ANTES EL RUT DEL CLIENTE
         if (request.getParameter("txtRut").trim().length() == 0) {
             errores.add("Debe ingresar un rut");
@@ -70,13 +69,9 @@ public class pagoController {
         } catch (NumberFormatException ex) {
             errores.add("El rut debe ser numérico.");
         }
-        /*if (rut == null) {
-            mv.addObject("error", "Debe ingresar un rut");
-            return mv;
-        } else if (rut.equals("")) {
-            mv.addObject("error", "Debe ingresar un rut");
-            return mv;
-        }*/
+        if (request.getParameter("txtRut").length() > 10) {
+            errores.add("El campo rut no puede superar los 10 digitos");
+        }
 
         if (errores.size() > 0) {
             request.setAttribute("error", errores);
@@ -110,10 +105,18 @@ public class pagoController {
             ClienteDAO clienteDAOBusqueda = new ClienteDAO();
 
             //SE VALIDA QUE ANTES DE BUSCAR UN CLIENTE EN EL FORMULARIO DE BUSCAR
-            //SI INGRESE EL RUT.
+            //Se INGRESE EL RUT.
             ArrayList<String> errores = new ArrayList<>();
             if (request.getParameter("txtRut").trim().length() == 0) {
                 errores.add("El campo rut no puede estar vacío");
+            }
+            try {
+                Integer.parseInt(request.getParameter("txtRut"));
+            } catch (NumberFormatException ex) {
+                errores.add("El rut debe ser numérico.");
+            }
+            if (request.getParameter("txtRut").length() > 10) {
+                errores.add("El campo rut no puede superar los 10 digitos");
             }
             if (errores.size() > 0) {
                 request.setAttribute("error", errores);
@@ -149,14 +152,36 @@ public class pagoController {
             }
         }
 
-        //int rut = Integer.parseInt(request.getParameter("txtRut"));
         //CLIENTE
         Cliente cliente = crearCliente(request);
+        if (cliente == null) {
+            mv.addObject("cliente", cliente);
+            PagoDAO pagoDAO = new PagoDAO();
+            mv.addObject("pagos", pagoDAO.ListarPago());
+            EnvioDAO envioDAO = new EnvioDAO();
+            mv.addObject("envios", envioDAO.listarEnvio());
+            EstacionamientoDAO estacionamientoDAO = new EstacionamientoDAO();
+            mv.addObject("estacionamientos", estacionamientoDAO.listarEstacionamientos());
+            return mv;
+        }
         mv.addObject("cliente", cliente);
-        
 
         //OPCIONES DE PAGO
-        //
+        ArrayList<String> errores = new ArrayList<>();
+
+        if (request.getParameter("rbOpcionesPago") == null) {
+            errores.add("seleccione el tipo de pago");
+        }
+        if (errores.size() > 0) {
+            request.setAttribute("error", errores);
+            PagoDAO pagoDAO = new PagoDAO();
+            mv.addObject("pagos", pagoDAO.ListarPago());
+            EnvioDAO envioDAO = new EnvioDAO();
+            mv.addObject("envios", envioDAO.listarEnvio());
+            EstacionamientoDAO estacionamientoDAO = new EstacionamientoDAO();
+            mv.addObject("estacionamientos", estacionamientoDAO.listarEstacionamientos());
+            return mv;
+        }
         int idOpcionPago = Integer.parseInt(request.getParameter("rbOpcionesPago"));
         mv.addObject("idOpcionPago", idOpcionPago);
         PagoDAO pagoDAO = new PagoDAO();
@@ -164,6 +189,19 @@ public class pagoController {
         Pago pago = new Pago(idOpcionPago);
 
         //ID ENVIO
+        if (request.getParameter("rbEnvio") == null) {
+            errores.add("seleccione el tipo de envio");
+        }
+        if (errores.size() > 0) {
+            request.setAttribute("error", errores);
+
+            mv.addObject("pagos", pagoDAO.ListarPago());
+            EnvioDAO envioDAO = new EnvioDAO();
+            mv.addObject("envios", envioDAO.listarEnvio());
+            EstacionamientoDAO estacionamientoDAO = new EstacionamientoDAO();
+            mv.addObject("estacionamientos", estacionamientoDAO.listarEstacionamientos());
+            return mv;
+        }
         int idEnvio = Integer.parseInt(request.getParameter("rbEnvio"));
         mv.addObject("idEnvio", idEnvio);
         EnvioDAO envioDAO = new EnvioDAO();
@@ -172,7 +210,17 @@ public class pagoController {
 
         //ESTACIONAMIENTOS
         EstacionamientoDAO estacionamientoDAO = new EstacionamientoDAO();
+        if (request.getParameter("slcEstacionamiento") == null) {
+            errores.add("seleccione el tipo de estacionamiento");
+        }
+        if (errores.size() > 0) {
+            request.setAttribute("error", errores);
 
+            mv.addObject("pagos", pagoDAO.ListarPago());
+            mv.addObject("envios", envioDAO.listarEnvio());
+            mv.addObject("estacionamientos", estacionamientoDAO.listarEstacionamientos());
+            return mv;
+        }
         int rut = Integer.parseInt(request.getParameter("txtRut"));
         mv.addObject("estacionamientos", estacionamientoDAO.listarEstacionamientos());
         int estadoTicket = Integer.parseInt(rut + "0");//EL CERO ES ESTADO GUARDADO
@@ -182,15 +230,32 @@ public class pagoController {
 
         switch (boton) {
             case "agregar":
+                if (request.getParameter("slcEstacionamiento").equals("Seleccione...")) {
+                    errores.add("seleccione un estacionamiento");
+                }
+                if (errores.size() > 0) {
+                    request.setAttribute("error", errores);
+                    mv.addObject("pagos", pagoDAO.ListarPago());
+                    mv.addObject("envios", envioDAO.listarEnvio());
+                    mv.addObject("estacionamientos", estacionamientoDAO.listarEstacionamientos());
+                    return mv;
+                }
 
                 Estacionamiento estacionamiento = new Estacionamiento();
                 int idEstacionamiento = Integer.parseInt(request.getParameter("slcEstacionamiento"));
                 estacionamiento.setIdEstacionamiento(idEstacionamiento);
                 //AGREGAR TICKET
-                ArrayList<String> errores = new ArrayList<>();
 
-                if (request.getParameter("txtMonto").length() == 0) {
+                if (request.getParameter("txtMonto").length() == 0 ) {
                     errores.add("El campo monto no puede estar vacio");
+                }
+                if (request.getParameter("txtMonto").length() > 50) {
+                    errores.add("El campo monto no puede superar los 50 digitos");
+                }
+                try {
+                    Integer.parseInt(request.getParameter("txtMonto"));
+                } catch (NumberFormatException ex) {
+                    errores.add("El monto debe ser numérico.");
                 }
                 if (errores.size() > 0) {
                     request.setAttribute("error", errores);
@@ -323,27 +388,31 @@ public class pagoController {
         } catch (NumberFormatException ex) {
             errores.add("El rut debe ser numérico.");
         }
+        if (request.getParameter("txtRut").length() > 10) {
+            errores.add("El campo rut no puede superar los 10 digitos");
+        }
         if (request.getParameter("txtNombre").trim().length() == 0) {
             errores.add("El campo nombre no puede estar vacío");
         }
-        if (request.getParameter("txtNombre").trim().length() > 25) {
-            errores.add("El nombre debe tener un largo maximo de 25");
+        if (request.getParameter("txtNombre").trim().length() > 20) {
+            errores.add("El nombre debe tener un largo maximo de 20");
         }
         if (request.getParameter("txtTelefono").trim().length() == 0) {
-            errores.add("El campo nombre no puede estar vacío");
+            errores.add("El campo telefono no puede estar vacío");
         }
-        if (request.getParameter("txtTelefono").trim().length() > 25) {
-            errores.add("El nombre debe tener un largo maximo de 25");
+        if (request.getParameter("txtTelefono").trim().length() > 12) {
+            errores.add("El telefono debe tener un largo maximo de 12");
         }
         if (request.getParameter("txtEmail").trim().length() == 0) {
-            errores.add("El campo nombre no puede estar vacío");
+            errores.add("El campo email no puede estar vacío");
         }
-        if (request.getParameter("txtEmail").trim().length() > 25) {
-            errores.add("El nombre debe tener un largo maximo de 25");
+        if (request.getParameter("txtEmail").trim().length() > 50) {
+            errores.add("El email debe tener un largo maximo de 50");
         }
         if (errores.size() > 0) {
             request.setAttribute("errores", errores);
-            return cliente;
+
+            return null;
         }
 
         int rut = Integer.parseInt(request.getParameter("txtRut"));
